@@ -17,3 +17,41 @@ Content-Type: application/json
     "username": "thuan",
     "password": "thuandeptrai"
 }
+
+
+########################################################
+/// CREATE TASK
+POST http://localhost:5000/api/tasks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
+
+{
+    "name": "Make Dinner",
+    "description": "",
+    "check": false
+}
+
+
+########################################################
+/// GET TASK
+GET http://localhost:5000/api/tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTgxMzk5fQ.xqul9J8uMx0aHXIbut9Dg77ZzW508UgyvgVZ9tNTCUU
+
+
+
+########################################################
+/// Update TASK
+PUT http://localhost:5000/api/tasks/6468ae411c12ded91fcd74fd
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
+
+{
+    "name": "Make Dinner",
+    "description": "",
+    "check": true
+}
+
+########################################################
+/// Delete TASK
+DELETE http://localhost:5000/api/tasks/6468ae411c12ded91fcd74fd
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM

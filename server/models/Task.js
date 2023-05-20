@@ -12,6 +12,10 @@ const TaskSchema = new Schema({
     check: {
         type: Boolean,
         default: false
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
     }
 })
 
