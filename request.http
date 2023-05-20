@@ -1,4 +1,16 @@
+//// REGISTER
 POST http://localhost:5000/api/auth/register
+Content-Type: application/json
+
+{
+    "username": "thuan",
+    "password": "thuandeptrai"
+}
+
+
+######################################################
+/// LOGIN IN
+POST http://localhost:5000/api/auth/login
 Content-Type: application/json
 
 {
