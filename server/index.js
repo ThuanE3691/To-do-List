@@ -1,33 +1,32 @@
 require("dotenv").config();
 
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors')
+const express = require("express");
+const mongoose = require("mongoose");
+const cors = require("cors");
 
-const authRouter = require('./routes/auth')
-const taskRouter = require('./routes/task')
-
-
+const authRouter = require("./routes/auth");
+const taskRouter = require("./routes/task");
 
 const connectDatabase = async () => {
-    try {
-        await mongoose.connect(`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@to-do-list.k6zekho.mongodb.net/?retryWrites=true&w=majority`)
-        console.log('Connect to MongoDB successfully');
-    } catch (error) {
-        console.log(error)
-    }
-}
+	try {
+		await mongoose.connect(
+			`mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@to-do-list.k6zekho.mongodb.net/?retryWrites=true&w=majority`
+		);
+		console.log("Connect to MongoDB successfully");
+	} catch (error) {
+		console.log(error);
+	}
+};
 
-connectDatabase()
+connectDatabase();
 
-const app = express()
+const app = express();
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-app.use('/api/auth',authRouter)
-app.use('/api/tasks',taskRouter)
-
+app.use("/api/auth", authRouter);
+app.use("/api/tasks", taskRouter);
 
 const PORT = 5000;
 

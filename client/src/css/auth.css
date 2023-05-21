@@ -1,0 +1,92 @@
+.dark-theme{
+    background: #1D1D26;
+    height: 100vh;
+    text-align: center;
+}
+
+.inner{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 12%;
+}
+
+.title{
+    font-family: 'Inter';
+    font-size: 40px;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 50px;
+}
+
+.form-icon{
+    transform: translate(20px,16px); 
+    position: absolute;
+}
+.form-input{
+    background: #1D1D26;
+    width: 20vw;
+    border: 3px solid #30303D;
+    border-radius: 12px;
+    height: 50px;
+    outline: none;
+    font-size: 16px;
+    color: white;
+    padding: 15px 40px;
+    font-family: 'Nunito';
+
+}
+
+.form-input::placeholder{
+    color: white;
+    font-size: 16px;
+    font-family: 'Nunito';
+    font-weight: 400;
+    opacity: 90%;
+}
+
+.form-input::placeholder:hover{
+    display: none;
+}
+
+.form-row{
+    margin-top: 20px;
+}
+
+.form-button{
+    width: 20vw;
+    height: 50px;
+    font-size: 16px;
+    padding: 10px;
+    text-align: center;
+    color: white;
+    font-weight: 700;
+    background-image: linear-gradient(to top right,#C446D5, #FF9F7C);
+    border-radius: 12px;
+    margin-top: 30px;
+    font-family: 'Nunito';
+    transition: all ease-in-out 0.2s;
+    border-bottom: 4px solid rgba(128, 0, 128, 0.5);
+}
+
+.form-button:hover{
+    opacity: 70%
+}
+
+.form-account{
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: 'Nunito';
+    margin-top: 20px;
+    transition:  all ease-in-out 0.2s;
+}
+
+.form-account :nth-child(1){
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+}
+
+.form-account :nth-child(2):hover{
+    opacity: 70%;
+}
