@@ -9,6 +9,7 @@
     flex-direction: column;
     align-items: center;
     padding-top: 12%;
+    overflow: hidden;
 }
 
 .title{
@@ -20,11 +21,12 @@
 }
 
 .form-icon{
-    transform: translate(20px,16px); 
     position: absolute;
+    top: 30%;
+    left: 18px;
 }
 .form-input{
-    background: #1D1D26;
+    background: transparent;
     width: 20vw;
     border: 3px solid #30303D;
     border-radius: 12px;
@@ -34,6 +36,7 @@
     color: white;
     padding: 15px 40px;
     font-family: 'Nunito';
+    transition: all ease-in-out 0.2s;
 
 }
 
@@ -49,8 +52,14 @@
     display: none;
 }
 
+.form-input:focus{
+    border-color: white
+}
+
 .form-row{
     margin-top: 20px;
+    width: 100%;
+    position: relative;
 }
 
 .form-button{
@@ -90,3 +99,5 @@
 .form-account :nth-child(2):hover{
     opacity: 70%;
 }
+
+

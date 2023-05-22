@@ -10,7 +10,7 @@ const RegisterForm = () => {
 	return (
 		<Form>
 			<Form.Group className="mt-8">
-				<Row>
+				<Row className="form-row">
 					<FontAwesomeIcon
 						icon={faUser}
 						style={{ color: "#dbdfe6", height: "16px" }}

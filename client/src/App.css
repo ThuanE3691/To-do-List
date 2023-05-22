@@ -5,6 +5,11 @@
   overflow-x: hidden;
 }
 
+.loader {
+  overflow-y: hidden
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

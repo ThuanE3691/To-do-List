@@ -1,3 +1,8 @@
+GET http://localhost:5000/api/auth
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
+
+
+
 //// REGISTER
 POST http://localhost:5000/api/auth/register
 Content-Type: application/json
