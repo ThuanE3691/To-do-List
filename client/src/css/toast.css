@@ -1,0 +1,7 @@
+.toast{
+    width: 200px;
+    height: 50px;
+    background-color: white;
+    border-radius: 2px;
+    text-align: left;
+}

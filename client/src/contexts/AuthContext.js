@@ -66,7 +66,28 @@ const AuthContextProvider = ({ children }) => {
 		}
 	};
 
-	const AuthContextData = { loginUser, authState };
+	// register
+	const registerUser = async (registerForm) => {
+		try {
+			const response = await axios.post(
+				`${API_URL}/auth/register`,
+				registerForm
+			);
+			if (response.data.success) {
+				dispatch({
+					type: "SET_AUTH",
+					payload: { isAuthenticated: false },
+				});
+			}
+
+			return response.data;
+		} catch (error) {
+			if (error.response.data) return error.response.data;
+			else return { success: false, message: error.message };
+		}
+	};
+
+	const AuthContextData = { loginUser, registerUser, authState };
 
 	return (
 		<AuthContext.Provider value={AuthContextData}>

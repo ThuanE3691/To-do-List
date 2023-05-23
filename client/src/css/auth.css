@@ -22,7 +22,7 @@
 
 .form-icon{
     position: absolute;
-    top: 30%;
+    top: 55%;
     left: 18px;
 }
 .form-input{
@@ -36,30 +36,58 @@
     color: white;
     padding: 15px 40px;
     font-family: 'Nunito';
-    transition: all ease-in-out 0.2s;
-
+    transition: all ease 0.2s;
+    z-index: 0;
 }
 
-.form-input::placeholder{
+
+.form-input-label{
+    display: block;
     color: white;
-    font-size: 16px;
+    font-size: 13px;
     font-family: 'Nunito';
     font-weight: 400;
     opacity: 90%;
+    position: absolute;
+    top: 25%;
+    left: 32px;
+    pointer-events: none;
+    transform-origin: top left;
+    transition: 0.2s;
+    background-color: #1D1D26;
+    padding: 0 10px;
+    z-index: 1;
+    opacity: 1;
 }
 
-.form-input::placeholder:hover{
-    display: none;
+.form-input::placeholder{
+    color: transparent;
+}
+
+.form-input:placeholder-shown ~ .form-input-label{
+    top: 50%;
+    font-size: 16px;
+    padding: 0 10px;
+    opacity: 0.5;
 }
 
 .form-input:focus{
-    border-color: white
+    border-color: rgba(255, 255, 255, 0.699);
+}
+
+.form-input:focus ~ .form-input-label{
+    display: block;
+    position: absolute;
+    top: 25%;
+    font-size: 13px;
+    padding: 0 10px;
+    opacity: 1;
 }
 
 .form-row{
-    margin-top: 20px;
     width: 100%;
     position: relative;
+    padding-top: 25px;
 }
 
 .form-button{
@@ -78,7 +106,12 @@
     border-bottom: 4px solid rgba(128, 0, 128, 0.5);
 }
 
-.form-button:hover{
+.form-button.not-active{
+    opacity: 50%;
+    cursor: default;
+}
+
+.form-button.active:hover{
     opacity: 70%
 }
 

@@ -5,6 +5,7 @@ import Loading from "../components/Layouts/Loading";
 import { AuthContext } from "../contexts/AuthContext";
 import { useContext } from "react";
 import { Navigate } from "react-router-dom";
+import ToastShow from "../components/Layouts/ToastShow";
 
 const Auth = ({ authRoute }) => {
 	const {
@@ -21,6 +22,7 @@ const Auth = ({ authRoute }) => {
 			<>
 				{authRoute === "login" && <LoginForm />}
 				{authRoute === "register" && <RegisterForm />}
+				{<ToastShow></ToastShow>}
 			</>
 		);
 	}
