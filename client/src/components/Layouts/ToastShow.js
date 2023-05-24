@@ -49,9 +49,6 @@ const ToastShow = ({ type, message }) => {
 	};
 
 	useEffect(() => {
-		if (timerId) {
-			clearTimeout(timerId);
-		}
 		auto_hide_toast();
 	}, []);
 
