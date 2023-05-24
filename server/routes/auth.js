@@ -46,7 +46,7 @@ router.post("/register", async (req, res) => {
 		if (user) {
 			return res.status(400).json({
 				success: false,
-				message: "Your username already taken",
+				message: "Your username already in use",
 			});
 		}
 

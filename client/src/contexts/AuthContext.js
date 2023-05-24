@@ -1,4 +1,4 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useEffect, useState } from "react";
 import { authReducer } from "../reducers/authReducer";
 import { API_URL, LOCAL_STORAGE_TOKEN_NAME } from "./constans";
 import axios from "axios";
@@ -11,6 +11,12 @@ const AuthContextProvider = ({ children }) => {
 		authLoading: true,
 		isAuthenticated: false,
 		user: null,
+	});
+
+	const [showToast, setShowToast] = useState({
+		show: false,
+		type: "",
+		message: "",
 	});
 
 	const loadUser = async () => {
@@ -87,7 +93,13 @@ const AuthContextProvider = ({ children }) => {
 		}
 	};
 
-	const AuthContextData = { loginUser, registerUser, authState };
+	const AuthContextData = {
+		loginUser,
+		registerUser,
+		showToast,
+		setShowToast,
+		authState,
+	};
 
 	return (
 		<AuthContext.Provider value={AuthContextData}>

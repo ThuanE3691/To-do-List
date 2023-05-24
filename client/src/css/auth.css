@@ -4,6 +4,35 @@
     text-align: center;
 }
 
+.dark-theme::before{
+    content: "";
+    width: 100px;
+    height: 100px;
+    /* background-image: linear-gradient(45deg,#AE2BC3, #FFBAB0); */
+    background-image: linear-gradient(to top right, #101015 20%, #323242 90%);
+    position: absolute;
+    top: 5%;
+    right: 30%;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 2px;
+}
+
+.dark-theme::after{
+    content: "";
+    width: 175px;
+    height: 175px;
+    /* background-image: linear-gradient(45deg,#AE2BC3, #FFBAB0); */
+    background-image: linear-gradient(50deg, #AB2BC7 20%, #DA57B2 40%, #FFBFAE 80%);
+    position: absolute;
+    top: -10%;
+    left: 30%;
+    border-radius: 50%;
+    display: block;
+    box-shadow: 2px;
+}
+
+
 .inner{
     display: flex;
     flex-direction: column;
@@ -98,7 +127,7 @@
     text-align: center;
     color: white;
     font-weight: 700;
-    background-image: linear-gradient(to top right,#C446D5, #FF9F7C);
+    background-image: linear-gradient(to top right,#C446D5 15%, #FF9F7C 85%);
     border-radius: 12px;
     margin-top: 30px;
     font-family: 'Nunito';

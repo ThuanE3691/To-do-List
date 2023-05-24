@@ -1,5 +1,4 @@
 import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
 import { Link, useNavigate } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
@@ -9,7 +8,7 @@ import { useContext, useState } from "react";
 import InputField from "../Layouts/InputField";
 
 const RegisterForm = () => {
-	const { registerUser } = useContext(AuthContext);
+	const { registerUser, setShowToast } = useContext(AuthContext);
 
 	const [registerForm, setRegisterForm] = useState({
 		username: "",
@@ -31,15 +30,32 @@ const RegisterForm = () => {
 	const register = async () => {
 		// Check password and confirm password has same value
 		if (password !== confirmPassword) {
-			console.log("Password and confirm password not the same");
+			setShowToast({
+				show: true,
+				type: "warning",
+				message: "Password and confirm password do not match",
+			});
 		} else {
 			const register_data = await registerUser(registerForm);
 			if (register_data.success) {
-				console.log(register_data.message);
+				setShowToast({
+					show: true,
+					type: "success",
+					message: register_data.message,
+				});
 				navigate("/login");
+			} else {
+				setShowToast({
+					show: true,
+					type: "warning",
+					message: register_data.message,
+				});
 			}
 		}
 	};
+
+	const button_state =
+		username && password && confirmPassword ? "active" : "not-active";
 
 	return (
 		<Form>
@@ -73,7 +89,7 @@ const RegisterForm = () => {
 					onChange={onChangeInputField}
 				></InputField>
 			</Form.Group>
-			<Button className="form-button" onClick={register}>
+			<Button className={`form-button ${button_state}`} onClick={register}>
 				Create Account
 			</Button>
 			<Form.Group className="form-account">

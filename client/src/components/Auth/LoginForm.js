@@ -8,7 +8,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import InputField from "../Layouts/InputField";
 
 const LoginForm = () => {
-	const { loginUser } = useContext(AuthContext);
+	const { loginUser, setShowToast } = useContext(AuthContext);
 
 	const [loginForm, setLoginForm] = useState({
 		username: "",
@@ -28,12 +28,24 @@ const LoginForm = () => {
 		try {
 			const loginData = await loginUser(loginForm);
 			if (!loginData.success) {
-				console.log(loginData.message);
+				setShowToast({
+					show: true,
+					type: "error",
+					message: loginData.message,
+				});
 			} else {
-				console.log(loginData);
+				setShowToast({
+					show: true,
+					type: "success",
+					message: loginData.message,
+				});
 			}
 		} catch (error) {
-			console.log(error);
+			setShowToast({
+				show: true,
+				type: "error",
+				message: error.message,
+			});
 		}
 	};
 

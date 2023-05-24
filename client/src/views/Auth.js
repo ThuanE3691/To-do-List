@@ -10,6 +10,7 @@ import ToastShow from "../components/Layouts/ToastShow";
 const Auth = ({ authRoute }) => {
 	const {
 		authState: { authLoading, isAuthenticated },
+		showToast: { show, type, message },
 	} = useContext(AuthContext);
 
 	let body;
@@ -20,12 +21,13 @@ const Auth = ({ authRoute }) => {
 	else {
 		body = (
 			<>
+				{show && <ToastShow type={type} message={message}></ToastShow>}
 				{authRoute === "login" && <LoginForm />}
 				{authRoute === "register" && <RegisterForm />}
-				{<ToastShow></ToastShow>}
 			</>
 		);
 	}
+
 	return (
 		<div className="dark-theme">
 			<div className="inner">
