@@ -2,7 +2,7 @@ GET http://localhost:5000/api/auth
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
 
 
-
+###############################
 //// REGISTER
 POST http://localhost:5000/api/auth/register
 Content-Type: application/json
@@ -23,38 +23,49 @@ Content-Type: application/json
     "password": "thuandeptrai"
 }
 
-
 ########################################################
-/// CREATE TASK
-POST http://localhost:5000/api/tasks
+/// CREATE COLLECTION
+POST http://localhost:5000/api/collections
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 {
-    "name": "Make Dinner",
-    "description": "",
+    "name": "Cook",
+    "image": "Cook",
+    "tasks": []
+}
+
+########################################################
+/// GET all Collections
+GET http://localhost:5000/api/collections
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
+
+
+
+########################################################
+/// Add task to COLLECTION
+POST http://localhost:5000/api/collections/646f91011b02782b2949c7c7/tasks
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI5NjY0fQ.4v1by5XWJ5tpICXgb7xlWI28N2uLPJsgo10qZ6GkJdA
+
+{
+    "name": "Make Cake for Birthday",
+    "description": "Socola Cake",
     "check": false
 }
 
-
 ########################################################
-/// GET TASK
-GET http://localhost:5000/api/tasks
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTgxMzk5fQ.xqul9J8uMx0aHXIbut9Dg77ZzW508UgyvgVZ9tNTCUU
-
+/// GET One Collections
+GET http://localhost:5000/api/collections/646f8ae4a62ff92f5d096a18
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 
 ########################################################
 /// Update TASK
-PUT http://localhost:5000/api/tasks/6468ae411c12ded91fcd74fd
+PUT http://localhost:5000/api/collections/646f8ae4a62ff92f5d096a18/tasks/646f8dbb59c9ae9d468f77ab
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ODg1ZmQ3MmRmZGNjNjExYTM5YjgwIiwiaWF0IjoxNjg0NTc3NTY1fQ.ZfmWtOh05GVlkzCgbllB1HlqLyb5MKUrDrEzUryXooM
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
-{
-    "name": "Make Dinner",
-    "description": "",
-    "check": true
-}
 
 ########################################################
 /// Delete TASK

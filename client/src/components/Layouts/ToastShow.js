@@ -5,10 +5,8 @@ import { useState, useEffect } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import { useContext } from "react";
 
-const ToastShow = ({ type, message }) => {
+const ToastShow = ({ toast_class = "toast show", type, message }) => {
 	const toast_icon_class = `toast-icon ${type}`;
-
-	let timerId;
 
 	const {
 		showToast: { show },
@@ -22,7 +20,7 @@ const ToastShow = ({ type, message }) => {
 		error: `bx bxs-x-circle bx-sm ${toast_icon_class}`,
 	};
 
-	const [toastClass, setToastClass] = useState("toast show");
+	const [toastClass, setToastClass] = useState(toast_class);
 
 	const auto_hide_toast = () => {
 		setTimeout(() => {
@@ -38,15 +36,23 @@ const ToastShow = ({ type, message }) => {
 
 	const onClose = async () => {
 		setToastClass("toast hide");
-		timerId = setTimeout(() => {
-			if (show) {
+		setTimeout(() => {
+			if (toastClass === "toast hide" && show === true) {
 				setShowToast((showToast) => {
 					return { ...showToast, show: false };
 				});
 				setToastClass("toast show");
 			}
-		}, 1000);
+		}, 1);
 	};
+
+	useEffect(() => {
+		if (toastClass === "toast show") {
+			setShowToast((showToast) => {
+				return { ...showToast, show: true };
+			});
+		}
+	}, [toast_class]);
 
 	useEffect(() => {
 		auto_hide_toast();

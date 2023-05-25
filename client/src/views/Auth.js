@@ -21,7 +21,13 @@ const Auth = ({ authRoute }) => {
 	else {
 		body = (
 			<>
-				{show && <ToastShow type={type} message={message}></ToastShow>}
+				{show && (
+					<ToastShow
+						type={type}
+						message={message}
+						toast_class="toast show"
+					></ToastShow>
+				)}
 				{authRoute === "login" && <LoginForm />}
 				{authRoute === "register" && <RegisterForm />}
 			</>

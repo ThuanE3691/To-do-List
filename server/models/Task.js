@@ -20,8 +20,13 @@ const TaskSchema = new Schema({
 	deadline: {
 		type: Date,
 	},
-	subTasks: [
-		{
+	collectionTasks: {
+		type: Schema.Types.ObjectId,
+		ref: "collections",
+	},
+	subTasks: {
+		type: Array,
+		items: {
 			name: {
 				type: String,
 				required: true,
@@ -34,7 +39,8 @@ const TaskSchema = new Schema({
 				default: false,
 			},
 		},
-	],
+		default: [],
+	},
 });
 
 module.exports = mongoose.model("tasks", TaskSchema);

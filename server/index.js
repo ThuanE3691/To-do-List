@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 
 const authRouter = require("./routes/auth");
+const collectionRouter = require("./routes/collection");
 const taskRouter = require("./routes/task");
 
 const connectDatabase = async () => {
@@ -26,7 +27,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/auth", authRouter);
-app.use("/api/tasks", taskRouter);
+app.use("/api/collections", collectionRouter);
+app.use("/api/collections/:id/tasks", taskRouter);
 
 const PORT = 5000;
 
