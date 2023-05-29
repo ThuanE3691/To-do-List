@@ -53,55 +53,6 @@ router.post("/", verifyToken, async (req, res) => {
 	}
 });
 
-// Update Tasks
-router.put("/:taskId/update", async (req, res) => {
-	if (!req.name) {
-		return res.status(400).json({
-			success: false,
-			message: "Missing task name",
-		});
-	}
-
-	try {
-		let updatedTask = {
-			...req.body,
-		};
-
-		const taskUpdateCondition = {
-			_id: req.params.id,
-			user: req.user_id,
-			in_collection: collection_id,
-		};
-
-		updatedTask = await Task.findOneAndUpdate(
-			taskUpdateCondition,
-			updatedTask,
-			{
-				new: true,
-			}
-		);
-
-		if (!updatedTask) {
-			return res.status(400).json({
-				success: false,
-				message: "Task not found or User not Authorized",
-			});
-		}
-
-		return res.status(200).json({
-			success: true,
-			message: "Task updated successfully",
-			task: updatedTask,
-		});
-	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: "Internal Server",
-			error: error.message,
-		});
-	}
-});
-
 router.put("/:task_id", verifyToken, async (req, res) => {
 	try {
 		const taskFindCondition = {
@@ -141,7 +92,7 @@ router.put("/:task_id", verifyToken, async (req, res) => {
 	}
 });
 
-router.delete("/:taskId", async (req, res) => {
+router.delete("/:task_id", async (req, res) => {
 	try {
 		const taskDeleteCondition = {
 			_id: req.params.id,
