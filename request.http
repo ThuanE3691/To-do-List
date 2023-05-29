@@ -44,28 +44,37 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// Add task to COLLECTION
-POST http://localhost:5000/api/collections/646f91011b02782b2949c7c7/tasks
+POST http://localhost:5000/api/collections/64748544683d96a2108f603c/tasks
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI5NjY0fQ.4v1by5XWJ5tpICXgb7xlWI28N2uLPJsgo10qZ6GkJdA
 
 {
-    "name": "Make Cake for Birthday",
-    "description": "Socola Cake",
-    "check": false
+    "name": "Make Color",
+    "note": "Colorful",
+    "check": false,
+    "subTasks": [
+        {
+            "name": "Buy color",
+            "check" : true
+        }
+    ]
 }
 
 ########################################################
 /// GET One Collections
-GET http://localhost:5000/api/collections/646f8ae4a62ff92f5d096a18
+GET http://localhost:5000/api/collections/64748544683d96a2108f603c
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 
 ########################################################
 /// Update TASK
-PUT http://localhost:5000/api/collections/646f8ae4a62ff92f5d096a18/tasks/646f8dbb59c9ae9d468f77ab
+PUT http://localhost:5000/api/collections/64748544683d96a2108f603c/tasks/6474855c683d96a2108f6044
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
+{
+    "check": true
+}
 
 ########################################################
 /// Delete TASK

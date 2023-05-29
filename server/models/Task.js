@@ -8,21 +8,14 @@ const TaskSchema = new Schema({
 	},
 	note: {
 		type: String,
+		default: "",
 	},
 	check: {
 		type: Boolean,
 		default: false,
 	},
-	user: {
-		type: Schema.Types.ObjectId,
-		ref: "users",
-	},
 	deadline: {
 		type: Date,
-	},
-	collectionTasks: {
-		type: Schema.Types.ObjectId,
-		ref: "collections",
 	},
 	subTasks: {
 		type: Array,
@@ -33,13 +26,21 @@ const TaskSchema = new Schema({
 			},
 			note: {
 				type: String,
+				default: "",
 			},
 			check: {
 				type: Boolean,
 				default: false,
 			},
 		},
-		default: [],
+	},
+	user: {
+		type: Schema.Types.ObjectId,
+		ref: "users",
+	},
+	in_collection: {
+		type: Schema.Types.ObjectId,
+		ref: "collections",
 	},
 });
 

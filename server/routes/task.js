@@ -1,28 +1,29 @@
 const express = require("express");
 const router = express.Router({ mergeParams: true });
+const Collection = require("../models/Collection.js");
 const Task = require("../models/Task.js");
 const verifyToken = require("../middleware/auth.js");
 
 //@ POST CREATE A TASK
 
-router.post("/create", async function (req, res) {
-	const { name, note, check, user_id, collection_id } = req.body;
+router.post("/", verifyToken, async (req, res) => {
+	const collection_id = req.params.id;
 
-	if (!user_id) {
-		return res.status(400).json({
-			success: false,
-			message: "Access denied",
-		});
-	}
+	const collectionFindCondition = {
+		user: req.user_id,
+		_id: collection_id,
+	};
 
-	if (!name) {
+	const collection = await Collection.findOne(collectionFindCondition);
+
+	if (!req.body.name) {
 		return res.status(400).json({
 			success: false,
 			message: "Missing task name",
 		});
 	}
 
-	if (!collection_id) {
+	if (!collection) {
 		return res.status(400).json({
 			success: false,
 			message: "Task is not created from a collection, please create a new one",
@@ -31,14 +32,13 @@ router.post("/create", async function (req, res) {
 
 	try {
 		const new_task = new Task({
-			name: name,
-			note: note,
-			check: check,
-			user: user_id,
-			collectionTasks: collection_id,
+			...req.body,
+			user: req.user_id,
+			in_collection: collection_id,
 		});
-
 		await new_task.save();
+		collection.list_tasks.push(new_task._id);
+		await collection.save();
 		return res.status(200).json({
 			success: true,
 			message: "Task created successfully",
@@ -54,9 +54,8 @@ router.post("/create", async function (req, res) {
 });
 
 // Update Tasks
-router.put("/:id/update", async (req, res) => {
-	const { name, description, check } = req.body;
-	if (!name) {
+router.put("/:taskId/update", async (req, res) => {
+	if (!req.name) {
 		return res.status(400).json({
 			success: false,
 			message: "Missing task name",
@@ -65,14 +64,13 @@ router.put("/:id/update", async (req, res) => {
 
 	try {
 		let updatedTask = {
-			name: name,
-			description: description,
-			check: check,
+			...req.body,
 		};
 
 		const taskUpdateCondition = {
 			_id: req.params.id,
 			user: req.user_id,
+			in_collection: collection_id,
 		};
 
 		updatedTask = await Task.findOneAndUpdate(
@@ -90,7 +88,7 @@ router.put("/:id/update", async (req, res) => {
 			});
 		}
 
-		res.status(200).json({
+		return res.status(200).json({
 			success: true,
 			message: "Task updated successfully",
 			task: updatedTask,
@@ -104,7 +102,46 @@ router.put("/:id/update", async (req, res) => {
 	}
 });
 
-router.delete("/:id", async (req, res) => {
+router.put("/:task_id", verifyToken, async (req, res) => {
+	try {
+		const taskFindCondition = {
+			_id: req.params.task_id,
+			user: req.user_id,
+			in_collection: req.params.id,
+		};
+
+		const updatedTask = await Task.findOneAndUpdate(
+			taskFindCondition,
+			{
+				...req.body,
+			},
+			{
+				new: true,
+			}
+		);
+
+		if (!updatedTask) {
+			return res.status(400).json({
+				success: false,
+				message: "Task not found",
+			});
+		}
+
+		return res.status(200).json({
+			success: true,
+			message: "Task updated successfully",
+			task: updatedTask,
+		});
+	} catch (error) {
+		res.status(400).json({
+			success: false,
+			message: "Internal Server",
+			error: error.message,
+		});
+	}
+});
+
+router.delete("/:taskId", async (req, res) => {
 	try {
 		const taskDeleteCondition = {
 			_id: req.params.id,

@@ -11,14 +11,12 @@ const CollectionSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	tasks: {
-		type: Array,
-		items: {
+	list_tasks: [
+		{
 			type: Schema.Types.ObjectId,
 			ref: "tasks",
 		},
-		default: [],
-	},
+	],
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: "users",
