@@ -2,6 +2,7 @@ import { AuthContext } from "../../contexts/AuthContext";
 import { Navigate } from "react-router-dom";
 import { useContext } from "react";
 import Loading from "../Layouts/Loading";
+import Navbar from "../Layouts/Navbar";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
 	const {
@@ -14,6 +15,7 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 
 	return isAuthenticated ? (
 		<>
+			<Navbar></Navbar>
 			<Component></Component>
 		</>
 	) : (

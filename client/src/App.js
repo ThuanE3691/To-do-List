@@ -5,6 +5,7 @@ import Auth from "./views/Auth";
 import AuthContextProvider from "./contexts/AuthContext";
 import ProtectedRoute from "./components/Routing/ProtectedRoute";
 import Dashboard from "./views/Dashboard";
+import Collection from "./views/Collection";
 
 function App() {
 	return (
@@ -20,6 +21,10 @@ function App() {
 					<Route
 						path="/dashboard"
 						element={<ProtectedRoute component={Dashboard} />}
+					></Route>
+					<Route
+						path="/collections"
+						element={<ProtectedRoute component={Collection} />}
 					></Route>
 				</Routes>
 			</Router>

@@ -92,19 +92,42 @@ router.put("/:task_id", verifyToken, async (req, res) => {
 	}
 });
 
-router.delete("/:task_id", async (req, res) => {
+router.delete("/:task_id", verifyToken, async (req, res) => {
 	try {
-		const taskDeleteCondition = {
+		const collectionDeleteTaskCondition = {
 			_id: req.params.id,
 			user: req.user_id,
 		};
 
-		deletedTask = await Task.findOneAndDelete(taskDeleteCondition);
+		const taskDeleteCondition = {
+			_id: req.params.task_id,
+			user: req.user_id,
+			in_collection: req.params.id,
+		};
+
+		const CollectiondeletedTask = await Collection.findOneAndUpdate(
+			collectionDeleteTaskCondition,
+			{
+				$pull: {
+					list_tasks: req.params.task_id,
+				},
+				new: true,
+			}
+		);
+
+		if (!CollectiondeletedTask) {
+			return res.status(400).json({
+				success: false,
+				message: "Don't found task in collection to delete",
+			});
+		}
+
+		const deletedTask = await Task.findOneAndDelete(taskDeleteCondition);
 
 		if (!deletedTask) {
 			return res.status(400).json({
 				success: false,
-				message: "Task not found or User not Authorized",
+				message: "Task not found to deleted",
 			});
 		}
 

@@ -5,8 +5,10 @@
   overflow-x: hidden;
 }
 
-.loader {
-  overflow-y: hidden
+.page{
+  width: 100vw;
+  height: 100vh;
+  background-color: #181820;
 }
 
 

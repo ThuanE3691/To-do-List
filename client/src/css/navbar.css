@@ -1,0 +1,68 @@
+.nav{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 10px;
+    align-items: center;
+    background-color: #21212B;
+    border-radius: 2px;
+}
+
+.nav-left, .nav-right{
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    
+}
+
+.nav-item{
+    margin-right: 50px;
+    font-family: 'Nunito';
+    color: white;
+    display: flex;
+    align-items: center;
+    opacity: 50%;
+    transition: opacity ease-in-out 0.2s;
+    cursor: default
+}
+
+.nav-item.nav-active{
+    opacity: 1;
+    cursor: pointer;
+}
+
+.nav-item.nav-active:hover{
+    opacity: 60%;
+}
+
+.nav-icon {
+    color: rgba(255, 255, 255, 0.9);
+    
+}
+
+.nav-right .nav-icon{
+    transition: opacity ease-in-out 0.2s;
+    cursor: pointer;
+}
+
+.nav-right .nav-icon:hover{
+    opacity: 0.4;
+}
+
+.nav-left .nav-icon{
+    margin-right: 10px;
+}
+
+.nav-right .nav-icon{
+    margin-right: 20px;
+    /* opacity: 90%; */
+}
+
+
+.nav-add {
+    background-image: linear-gradient(to top right,#C446D5 15%, #FF9F7C 75%);
+    border-radius: 10px;
+    padding: 7px;
+}
