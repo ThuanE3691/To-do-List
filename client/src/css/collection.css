@@ -63,6 +63,27 @@
     opacity: 60%;
 }
 
+.collection-create{
+    width: 160px;
+    height: 75px;
+    border-radius: 12px;
+    border: 3px solid #21212B;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.collection-create img{
+    width: 12px;
+    height: 12px;
+    filter: invert(59%) sepia(6%) saturate(155%) hue-rotate(201deg) brightness(92%) contrast(89%);
+}
+
+.collection-create:hover{
+    opacity: 60%;
+}
+
 .collection-icon{
     width: fit-content;
     padding: 12px;

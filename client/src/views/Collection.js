@@ -1,4 +1,5 @@
 import "../css/collection.css";
+import add from "../assets/add.png";
 import Collection from "../components/Collections/Collection";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
@@ -45,7 +46,12 @@ const CollectionPage = () => {
 					<div className="dp fav-dp">Favourites</div>
 					<div className="dp all-dp active">All Collections</div>
 				</div>
-				<div className="collections-body">{collectionsBody}</div>
+				<div className="collections-body">
+					{collectionsBody}
+					<div className="collection-create">
+						<img src={add} alt="Create collection" />
+					</div>
+				</div>
 			</div>
 		</div>
 	);
