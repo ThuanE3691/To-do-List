@@ -1,0 +1,27 @@
+.skill{
+    width: 20px;
+    height: 20px;
+    /* background-color: cornflowerblue; */
+    position: relative;
+    overflow: hidden;
+}
+
+.outer{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: conic-gradient(#FC76A1 3.6deg, #32323F 0deg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.inter{
+    width: 13px;
+    height: 13px;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: #21212B;
+}

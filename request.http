@@ -30,8 +30,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 {
-    "name": "School",
-    "image": "School",
+    "name": "Groceries",
+    "image": "shopping",
+    "color": "#CFB452",
     "tasks": []
 }
 
@@ -44,14 +45,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// Add task to COLLECTION
-POST http://localhost:5000/api/collections/647491d07948fe185d1965d4/tasks
+POST http://localhost:5000/api/collections/64cbd86699f76b706e823139/tasks
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI5NjY0fQ.4v1by5XWJ5tpICXgb7xlWI28N2uLPJsgo10qZ6GkJdA
 
 {
-    "name": "Do Project",
-    "note": "Web Project",
-    "check": false
+    "name": "Clean house",
+    "note": "",
+    "check": true
 }
 
 ########################################################
@@ -62,7 +63,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// Update TASK
-PUT http://localhost:5000/api/collections/64748544683d96a2108f603c/tasks/6474855c683d96a2108f6044
+PUT http://localhost:5000/api/collections/64cbd43f99f76b706e823121/tasks/64cbdadd99f76b706e823153
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 

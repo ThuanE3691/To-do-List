@@ -11,8 +11,7 @@ const COLLECTION_URL = "http://localhost:5000/api/collections";
 router.get("/", verifyToken, async (req, res) => {
 	try {
 		const collections = await Collection.find({ user: req.user_id }).populate(
-			"user",
-			"username"
+			"list_tasks"
 		);
 		if (collections) {
 			res.status(200).json({
@@ -33,7 +32,7 @@ router.get("/", verifyToken, async (req, res) => {
 /// @POST CREATE A NEW COLLECTION
 
 router.post("/", verifyToken, async (req, res) => {
-	const { name, image } = req.body;
+	const { name, color, image } = req.body;
 
 	if (!name || !image) {
 		return res.status(404).json({
@@ -55,6 +54,7 @@ router.post("/", verifyToken, async (req, res) => {
 		collection = new Collection({
 			name: name,
 			image: image,
+			color: color,
 			user: req.user_id,
 		});
 

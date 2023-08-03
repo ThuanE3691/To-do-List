@@ -7,6 +7,10 @@ const CollectionSchema = new Schema({
 		required: true,
 		unique: true,
 	},
+	color: {
+		type: String,
+		required: true,
+	},
 	image: {
 		type: String,
 		required: true,

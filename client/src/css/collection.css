@@ -55,10 +55,15 @@
     margin-right: 15px;
     height: fit-content;
     margin-bottom: 15px;
+    transition: opacity 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.collection-container:hover{
+    opacity: 60%;
 }
 
 .collection-icon{
-    background-color: #FC76A1;
     width: fit-content;
     padding: 12px;
     border-radius: 12px;
@@ -83,4 +88,12 @@
     font-family: 'Inter';
     font-weight: 450;
     margin-top: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.collection-notice{
+    font-size: 20px;
+    font-family: 'Inter';
 }
