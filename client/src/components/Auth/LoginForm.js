@@ -1,6 +1,6 @@
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { faUser } from "@fortawesome/free-regular-svg-icons";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { useContext, useState } from "react";
@@ -16,8 +16,6 @@ const LoginForm = () => {
 	});
 
 	const { username, password } = loginForm;
-
-	const navigate = useNavigate();
 
 	const onChangeInput = (event) => {
 		setLoginForm({ ...loginForm, [event.target.name]: event.target.value });

@@ -1,6 +1,7 @@
 import "../../css/navbar.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
 	return (
@@ -8,11 +9,11 @@ const Navbar = () => {
 			<div className="nav-left">
 				<div className="nav-item">
 					<i className="nav-icon bx bxs-dashboard bx-sm"></i>
-					<span>Dashboard</span>
+					<Link to="/Dashboard">Dashboard</Link>
 				</div>
 				<div className="nav-item nav-active">
 					<i className="nav-icon bx bx-spreadsheet bx-sm"></i>
-					<span>Collections</span>
+					<Link to="/collections">Collections</Link>
 				</div>
 			</div>
 			<div className="nav-right">

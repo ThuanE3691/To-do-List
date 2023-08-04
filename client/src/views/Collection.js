@@ -1,6 +1,7 @@
 import "../css/collection.css";
 import add from "../assets/add.png";
 import Collection from "../components/Collections/Collection";
+import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
 
@@ -8,6 +9,9 @@ const CollectionPage = () => {
 	const {
 		collectionState: { collections, collectionsLoading },
 		getCollections,
+		isOpenCreateCollection,
+		SetIsOpenCreateCollection,
+		resetCreateCollection,
 	} = useContext(CollectionContext);
 
 	useEffect(() => {
@@ -35,9 +39,18 @@ const CollectionPage = () => {
 			</p>
 		);
 
+	const openCreateCollection = () => {
+		resetCreateCollection();
+		SetIsOpenCreateCollection(true);
+	};
+
 	return (
 		<div className="page">
-			<div className="pg-collections-container">
+			<div
+				className={`pg-collections-container ${
+					isOpenCreateCollection ? "not_active" : ""
+				}`}
+			>
 				<div className="collections-head">
 					<div className="title">Collections</div>
 					<div className="three-dot"></div>
@@ -48,11 +61,12 @@ const CollectionPage = () => {
 				</div>
 				<div className="collections-body">
 					{collectionsBody}
-					<div className="collection-create">
+					<div className="collection-create" onClick={openCreateCollection}>
 						<img src={add} alt="Create collection" />
 					</div>
 				</div>
 			</div>
+			<CollectionCreate></CollectionCreate>
 		</div>
 	);
 };

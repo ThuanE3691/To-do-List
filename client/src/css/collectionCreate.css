@@ -1,0 +1,153 @@
+.collection-box-create{
+    position: absolute;
+    font-size: 20px;
+    background-color: #21212B;
+    color: white;
+    padding: 20px;
+    width: 550px;
+    height: 400px;
+    top: 10%;
+    left: 32%;
+    border-radius: 12px;
+    font-family: 'Inter';
+    transition: visibility 0s, opacity 0.3s linear;
+    visibility: hidden;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.collection-box-create.active{
+    visibility: visible;
+    pointer-events: visible;
+    opacity: 1;
+}
+
+.c-box-head{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.c-box-name{
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.c-box-name p{
+    margin-bottom: 5px;
+}
+
+.c-box-name input{
+    padding: 5px;
+    padding-left: 10px;
+    width: 100%;
+    background-color: transparent;
+    border: 2px solid #848489;
+    border-radius: 6px;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.c-box-name input.not-fill{
+    border: 1px red solid;
+}
+
+.c-box-name input::selection{
+    border: 1px white solid;
+}
+
+
+.c-box-head img{
+    width: 16px;
+    height: 16px;
+    filter: invert(59%) sepia(6%) saturate(155%) hue-rotate(201deg) brightness(92%) contrast(89%);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.c-box-head img:hover{
+    opacity: 60%;
+}
+
+.c-box-icon p{
+    font-size: 14px;
+    margin-top: 15px;
+}
+
+.c-box-icon-container{
+    margin-top: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+}
+
+.c-box-icon-container .collection-icon{
+    transition: opacity 0.2s ease-in-out, border 0.1s linear;
+    cursor: pointer;
+}
+
+.c-box-icon-container .collection-icon.active{
+    border: 2px solid white;
+}
+
+.c-box-icon-container .collection-icon.not-fill{
+    border: 2px solid red;
+}
+
+.c-box-icon-container .collection-icon:hover{
+    opacity: 60%;
+}
+
+.c-box-color p{
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.c-box-button{
+    font-size: 16px;
+    margin-top: 40px;
+    background-image: linear-gradient(to top right,#C446D5 15%, #FF9F7C 75%);
+    padding: 10px 30px;
+    border-radius: 12px;
+    font-family: 'Inter';
+    font-weight: 500;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.c-box-button:hover{
+    opacity: 60%;
+}
+
+.color-picker-area{
+    display: flex;
+    align-items: center;
+}
+
+.color-picker-area p{
+    margin-left: 15px;
+    transform: translateY(-3px);
+    font-family: 'Comfortaa','Inter';
+}
+
+.color-picker-area input[type="color"]{
+	-webkit-appearance: none;
+    appearance: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    padding: 0px;
+    border-radius: 12px;
+    margin-top: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.color-picker-area input[type="color"]::-webkit-color-swatch-wrapper {
+	padding: 0;
+}
+.color-picker-area input[type="color"]::-webkit-color-swatch {
+	border: none;
+    outline: none;
+}

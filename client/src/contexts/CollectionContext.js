@@ -1,4 +1,4 @@
-import { createContext, useReducer } from "react";
+import { createContext, useReducer, useState } from "react";
 import { API_URL } from "./constans";
 import axios from "axios";
 import { CollectionReducer } from "../reducers/collectionReducer";
@@ -10,6 +10,19 @@ const CollectionContextProvider = ({ children }) => {
 	const [collectionState, dispatch] = useReducer(CollectionReducer, {
 		collections: [],
 		collectionsLoading: true,
+	});
+
+	const [isOpenCreateCollection, SetIsOpenCreateCollection] = useState(false);
+
+	const [newCollection, SetNewCollection] = useState({
+		name: "",
+		icon: null,
+		color: "#000000",
+	});
+
+	const [isCompleteForm, SetIsCompleteForm] = useState({
+		name: false,
+		icon: false,
 	});
 
 	const getCollections = async () => {
@@ -31,7 +44,31 @@ const CollectionContextProvider = ({ children }) => {
 		}
 	};
 
-	const collectionContextData = { collectionState, getCollections };
+	const resetCreateCollection = () => {
+		SetNewCollection({
+			...newCollection,
+			name: "",
+			icon: null,
+			color: "#000000",
+		});
+		SetIsCompleteForm({
+			...isCompleteForm,
+			name: false,
+			icon: false,
+		});
+	};
+
+	const collectionContextData = {
+		collectionState,
+		getCollections,
+		isOpenCreateCollection,
+		SetIsOpenCreateCollection,
+		newCollection,
+		SetNewCollection,
+		isCompleteForm,
+		SetIsCompleteForm,
+		resetCreateCollection,
+	};
 
 	return (
 		<CollectionContext.Provider value={collectionContextData}>
