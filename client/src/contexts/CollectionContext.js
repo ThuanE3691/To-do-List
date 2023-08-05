@@ -16,7 +16,7 @@ const CollectionContextProvider = ({ children }) => {
 
 	const [newCollection, SetNewCollection] = useState({
 		name: "",
-		icon: null,
+		image: null,
 		color: "#000000",
 	});
 
@@ -44,11 +44,34 @@ const CollectionContextProvider = ({ children }) => {
 		}
 	};
 
+	const addCollection = async (newCollection) => {
+		try {
+			const response = await axios.post(
+				`${API_URL}/collections`,
+				newCollection
+			);
+			if (response.data.success) {
+				dispatch({
+					type: "COLLECTIONS_ADD_SUCCESS",
+					payload: response.data.new_collection,
+				});
+				return response.data;
+			}
+		} catch (error) {
+			return error.response.data
+				? error.response.data
+				: {
+						success: false,
+						message: "Server error",
+				  };
+		}
+	};
+
 	const resetCreateCollection = () => {
 		SetNewCollection({
 			...newCollection,
 			name: "",
-			icon: null,
+			image: null,
 			color: "#000000",
 		});
 		SetIsCompleteForm({
@@ -68,6 +91,7 @@ const CollectionContextProvider = ({ children }) => {
 		isCompleteForm,
 		SetIsCompleteForm,
 		resetCreateCollection,
+		addCollection,
 	};
 
 	return (

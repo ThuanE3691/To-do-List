@@ -32,7 +32,7 @@ router.get("/", verifyToken, async (req, res) => {
 /// @POST CREATE A NEW COLLECTION
 
 router.post("/", verifyToken, async (req, res) => {
-	const { name, color, image } = req.body;
+	const { name, image, color } = req.body;
 
 	if (!name || !image) {
 		return res.status(404).json({

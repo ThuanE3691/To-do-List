@@ -8,6 +8,11 @@ export const CollectionReducer = (state, action) => {
 				collections: payload,
 				collectionsLoading: false,
 			};
+		case "COLLECTIONS_ADD_SUCCESS":
+			return {
+				...state,
+				collections: [...state.collections, payload],
+			};
 		default:
 			return state;
 	}

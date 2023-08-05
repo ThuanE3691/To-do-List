@@ -84,8 +84,9 @@
 }
 
 .c-box-icon-container .collection-icon{
-    transition: opacity 0.2s ease-in-out, border 0.1s linear;
+    transition: opacity 0.2s ease-in-out, border 0.3s ease-in-out;
     cursor: pointer;
+    border: 2px solid transparent;
 }
 
 .c-box-icon-container .collection-icon.active{

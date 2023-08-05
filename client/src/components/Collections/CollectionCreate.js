@@ -34,10 +34,11 @@ const CollectionCreate = () => {
 		resetCreateCollection,
 		isOpenCreateCollection,
 		SetIsOpenCreateCollection,
+		addCollection,
 	} = useContext(CollectionContext);
 
-	const onChangeCollection = (event, icon) => {
-		if (!icon) {
+	const onChangeCollection = (event, image) => {
+		if (!image) {
 			SetNewCollection({
 				...newCollection,
 				[event.target.name]: event.target.value,
@@ -45,7 +46,7 @@ const CollectionCreate = () => {
 		} else {
 			SetNewCollection({
 				...newCollection,
-				icon: icon,
+				image: image,
 			});
 		}
 	};
@@ -55,24 +56,22 @@ const CollectionCreate = () => {
 		SetIsOpenCreateCollection(false);
 	};
 
-	const onClickCreateCollection = (event) => {
+	const onClickCreateCollection = async (event) => {
 		event.preventDefault();
 
-		if (newCollection["name"] === "") {
+		if (newCollection["name"] === "" || newCollection["icon"] === null) {
 			SetIsCompleteForm({
 				...isCompleteForm,
-				name: true,
+				name: newCollection["name"] === "" ? true : false,
+				icon: newCollection["icon"] === null ? true : false,
 			});
+			return;
 		}
 
-		if (newCollection["icon"] === null) {
-			SetIsCompleteForm({
-				...isCompleteForm,
-				icon: true,
-			});
-		}
-
-		if (newCollection["name"] === "" || newCollection["icon"]) return;
+		const { success, message } = await addCollection(newCollection);
+		console.log(success, message);
+		resetCreateCollection();
+		SetIsOpenCreateCollection(false);
 	};
 
 	return (
@@ -99,11 +98,11 @@ const CollectionCreate = () => {
 				<div className="c-box-icon">
 					<p>Icon</p>
 					<div className="c-box-icon-container">
-						{Object.keys(list_icon).map((icon) => {
+						{Object.keys(list_icon).map((image) => {
 							return (
 								<div
 									className={`collection-icon ${
-										icon === newCollection["icon"]
+										image === newCollection["image"]
 											? "active"
 											: isCompleteForm["icon"]
 											? "not-fill"
@@ -112,13 +111,13 @@ const CollectionCreate = () => {
 									style={{
 										backgroundColor: `${newCollection["color"]}`,
 									}}
-									onClick={(event) => onChangeCollection(event, icon)}
-									name="icon"
+									onClick={(event) => onChangeCollection(event, image)}
+									name="image"
 								>
 									<img
-										src={list_icon[icon]}
+										src={list_icon[image]}
 										alt="collection-book"
-										name="icon"
+										name="image"
 									/>
 								</div>
 							);
