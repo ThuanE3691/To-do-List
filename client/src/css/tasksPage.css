@@ -1,0 +1,77 @@
+.pg-task-container{
+    color: white;
+    font-family: 'Inter';
+    height: auto;
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 45px 0;
+    margin-left: 30%;
+    width: 600px;
+    position: relative;
+    transition: all 0.2s ease-in-out;
+    pointer-events: visible;
+    z-index: 0;
+    font-weight: 500;
+}
+
+.task-header{
+    display: flex;
+    align-items: center;
+}
+
+.task-title{
+    font-size: 25px;
+    font-weight: 500;
+    margin-left: 20px;
+}
+
+.task-back{
+    padding: 10px;
+    background-color: #21212B;
+    border-radius: 12px;
+    cursor: pointer;
+}
+
+.task-back img{
+    width: 20px;
+    height: 20px;
+    filter: invert(100%) sepia(62%) saturate(0%) hue-rotate(232deg) brightness(116%) contrast(100%);
+}
+
+.add-task-area{
+    border-radius: 12px;
+    border: 3px solid #21212B;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    margin-top: 40px;
+    cursor: pointer;
+}
+
+.add-task-area p{
+    color: rgba(255, 255, 255, 0.5);
+    margin-left: 20px;
+    font-weight: 500;
+}
+
+.add-task-icon{
+    padding: 8px;
+    background-color: #FC7CA1;
+    width: fit-content;
+    border-radius: 12px;
+}
+
+.task-display-area{
+    margin-top: 40px;
+}
+
+.add-task-icon img{
+    width: 12px;
+    height: 12px;
+}
+
+.complete-task{
+    margin-top: 30px;
+}

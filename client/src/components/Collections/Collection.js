@@ -8,8 +8,9 @@ import shopping from "../../assets/shopping.png";
 import user from "../../assets/user.png";
 import work from "../../assets/work.png";
 import ProgressBar from "../Layouts/ProgressBar.js";
+import { motion } from "framer-motion";
 
-const Collection = ({ name, image, color, tasks }) => {
+const Collection = ({ name, image, color, tasks, index }) => {
 	const nums_tasks = tasks.length;
 
 	const list_icon = {
@@ -29,7 +30,11 @@ const Collection = ({ name, image, color, tasks }) => {
 	}, 0);
 
 	return (
-		<div className="collection-container">
+		<motion.div
+			whileHover={{ opacity: 0.6 }}
+			transition={{ duration: 0.2 }}
+			className="collection-container"
+		>
 			<div
 				className="collection-icon"
 				style={{
@@ -55,7 +60,7 @@ const Collection = ({ name, image, color, tasks }) => {
 					""
 				)}
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 

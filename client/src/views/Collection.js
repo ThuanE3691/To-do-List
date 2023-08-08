@@ -4,6 +4,9 @@ import Collection from "../components/Collections/Collection";
 import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import { COLLECTION_VIEW } from "../contexts/constans";
 
 const CollectionPage = () => {
 	const {
@@ -14,21 +17,36 @@ const CollectionPage = () => {
 		resetCreateCollection,
 	} = useContext(CollectionContext);
 
+	const navigate = useNavigate();
+
 	useEffect(() => {
 		getCollections();
 	}, []);
 
+	const onClickCollection = (e, collection) => {
+		localStorage.setItem(COLLECTION_VIEW, collection._id);
+		navigate("/collections/tasks");
+	};
+
 	let collectionsBody = null;
 	collectionsBody =
 		collections.length !== 0 ? (
-			collections.map((collection) => {
+			collections.map((collection, index) => {
 				return collection ? (
-					<Collection
-						name={collection.name}
-						image={collection.image}
-						color={collection.color}
-						tasks={collection.list_tasks}
-					></Collection>
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						transition={{ delay: 0.1 * index, duration: 0.2 }}
+						onClick={(e) => onClickCollection(e, collection)}
+					>
+						<Collection
+							name={collection.name}
+							image={collection.image}
+							color={collection.color}
+							tasks={collection.list_tasks}
+							index={index}
+						></Collection>
+					</motion.div>
 				) : (
 					<></>
 				);
@@ -59,12 +77,15 @@ const CollectionPage = () => {
 					<div className="dp fav-dp">Favourites</div>
 					<div className="dp all-dp active">All Collections</div>
 				</div>
-				<div className="collections-body">
+				<motion.div className="collections-body">
 					{collectionsBody}
-					<div className="collection-create" onClick={openCreateCollection}>
+					<motion.div
+						className="collection-create"
+						onClick={openCreateCollection}
+					>
 						<img src={add} alt="Create collection" />
-					</div>
-				</div>
+					</motion.div>
+				</motion.div>
 			</div>
 			<CollectionCreate></CollectionCreate>
 		</div>

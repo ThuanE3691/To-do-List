@@ -82,9 +82,9 @@ router.get("/:id", verifyToken, async (req, res) => {
 			_id: req.params.id,
 			user: req.user_id,
 		};
-		const collection = await Collection.find(collectionFindCondition).populate(
-			"list_tasks"
-		);
+		const collection = await Collection.findOne(
+			collectionFindCondition
+		).populate("list_tasks");
 		if (collection) {
 			return res.status(200).json({
 				success: true,
