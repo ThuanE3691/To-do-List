@@ -4,7 +4,7 @@ import Collection from "../components/Collections/Collection";
 import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { COLLECTION_VIEW } from "../contexts/constans";
 
@@ -29,33 +29,37 @@ const CollectionPage = () => {
 	};
 
 	let collectionsBody = null;
-	collectionsBody =
-		collections.length !== 0 ? (
-			collections.map((collection, index) => {
-				return collection ? (
-					<motion.div
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						transition={{ delay: 0.1 * index, duration: 0.2 }}
-						onClick={(e) => onClickCollection(e, collection)}
-					>
-						<Collection
-							name={collection.name}
-							image={collection.image}
-							color={collection.color}
-							tasks={collection.list_tasks}
-							index={index}
-						></Collection>
-					</motion.div>
-				) : (
-					<></>
-				);
-			})
-		) : (
-			<p className="collection-notice">
-				You haven't created a collection. Let's create one!
-			</p>
-		);
+	collectionsBody = collectionsLoading ? (
+		<p className="loading-text">Waiting for loading collections...</p>
+	) : collections.length !== 0 ? (
+		collections.map((collection, index) => {
+			return collection ? (
+				<motion.div
+					initial={{ opacity: 0 }}
+					animate={{ opacity: 1 }}
+					exit={{ opacity: 0 }}
+					transition={{ delay: 0.1 * index, duration: 0.2 }}
+					onClick={(e) => onClickCollection(e, collection)}
+					key={"motion" + collection._id}
+				>
+					<Collection
+						key={collection._id}
+						name={collection.name}
+						image={collection.image}
+						color={collection.color}
+						tasks={collection.list_tasks}
+						index={index}
+					></Collection>
+				</motion.div>
+			) : (
+				<></>
+			);
+		})
+	) : (
+		<p className="collection-notice">
+			You haven't created a collection. Let's create one!
+		</p>
+	);
 
 	const openCreateCollection = () => {
 		resetCreateCollection();
@@ -63,11 +67,15 @@ const CollectionPage = () => {
 	};
 
 	return (
-		<div className="page">
-			<div
+		<>
+			<motion.div
 				className={`pg-collections-container ${
 					isOpenCreateCollection ? "not_active" : ""
 				}`}
+				initial={{ opacity: 0 }}
+				animate={{ opacity: 1 }}
+				exit={{ opacity: 0 }}
+				key="collection-page"
 			>
 				<div className="collections-head">
 					<div className="title">Collections</div>
@@ -82,13 +90,14 @@ const CollectionPage = () => {
 					<motion.div
 						className="collection-create"
 						onClick={openCreateCollection}
+						key="motion-create"
 					>
 						<img src={add} alt="Create collection" />
 					</motion.div>
 				</motion.div>
-			</div>
+			</motion.div>
 			<CollectionCreate></CollectionCreate>
-		</div>
+		</>
 	);
 };
 

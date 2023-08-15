@@ -9,9 +9,10 @@ import shopping from "../../assets/shopping.png";
 import user from "../../assets/user.png";
 import work from "../../assets/work.png";
 import close from "../../assets/close.png";
-import { useState, useContext } from "react";
+import { useContext } from "react";
 import { CollectionContext } from "../../contexts/CollectionContext";
 import "../../css/collectionCreate.css";
+import { motion } from "framer-motion";
 
 const CollectionCreate = () => {
 	const list_icon = {
@@ -75,10 +76,11 @@ const CollectionCreate = () => {
 	};
 
 	return (
-		<div
+		<motion.div
 			className={`collection-box-create ${
 				isOpenCreateCollection ? "active" : ""
 			}`}
+			exit={{ opacity: 0 }}
 		>
 			<Form>
 				<div className="c-box-head">
@@ -113,6 +115,7 @@ const CollectionCreate = () => {
 									}}
 									onClick={(event) => onChangeCollection(event, image)}
 									name="image"
+									key={image}
 								>
 									<img
 										src={list_icon[image]}
@@ -143,7 +146,7 @@ const CollectionCreate = () => {
 					Create
 				</button>
 			</Form>
-		</div>
+		</motion.div>
 	);
 };
 

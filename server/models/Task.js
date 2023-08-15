@@ -6,10 +6,6 @@ const TaskSchema = new Schema({
 		type: String,
 		required: true,
 	},
-	note: {
-		type: String,
-		default: "",
-	},
 	check: {
 		type: Boolean,
 		default: false,
@@ -41,6 +37,14 @@ const TaskSchema = new Schema({
 	in_collection: {
 		type: Schema.Types.ObjectId,
 		ref: "collections",
+	},
+	create_at: {
+		type: Date,
+		default: Date(),
+	},
+	finish_at: {
+		type: Date,
+		default: "",
 	},
 });
 

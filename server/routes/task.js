@@ -65,6 +65,7 @@ router.put("/:task_id", verifyToken, async (req, res) => {
 			taskFindCondition,
 			{
 				...req.body,
+				finish_at: req.body.check ? Date() : req.body.finish_at,
 			},
 			{
 				new: true,

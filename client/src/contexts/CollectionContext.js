@@ -5,6 +5,7 @@ import {
 	COLLECTIONS_LOADED_SUCCESS,
 	COLLECTION_VIEW_LOADED_SUCCESS,
 	COLLECTION_VIEW_RESET,
+	TASK_UPDATE_SUCCESS,
 } from "./constans";
 import axios from "axios";
 import { CollectionReducer } from "../reducers/collectionReducer";
@@ -17,6 +18,7 @@ const CollectionContextProvider = ({ children }) => {
 		collections: [],
 		collectionsLoading: true,
 		collectionView: {},
+		collectionViewLoading: true,
 	});
 
 	const [isOpenCreateCollection, SetIsOpenCreateCollection] = useState(false);
@@ -114,7 +116,30 @@ const CollectionContextProvider = ({ children }) => {
 		});
 	};
 
-	const updateTask = (task_id) => {};
+	const updateTask = async (task) => {
+		const collection_id = collectionState.collectionView._id;
+		const task_id = task._id;
+
+		try {
+			const response = await axios.put(
+				`${API_URL}/collections/${collection_id}/tasks/${task_id}`,
+				task
+			);
+			if (response.data.success) {
+				dispatch({
+					type: TASK_UPDATE_SUCCESS,
+					payload: response.data.task,
+				});
+			}
+		} catch (error) {
+			return error.response.data
+				? error.response.data
+				: {
+						success: false,
+						message: "Server error",
+				  };
+		}
+	};
 
 	const collectionContextData = {
 		collectionState,
@@ -129,6 +154,7 @@ const CollectionContextProvider = ({ children }) => {
 		addCollection,
 		getOneCollection,
 		resetCollectionView,
+		updateTask,
 	};
 
 	return (

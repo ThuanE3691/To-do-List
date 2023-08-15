@@ -33,9 +33,20 @@
     text-decoration-line: line-through;
 }
 
+.task-checkbox{
+    overflow: hidden;
+}
+
+.task-checkbox svg{
+    width: 12px;
+    height: 12px;
+    overflow: hidden;
+}
+
 .task-checkbox img{
     width: 12px;
     height: 12px;
+    overflow: hidden;
 }
 
 .task-name{

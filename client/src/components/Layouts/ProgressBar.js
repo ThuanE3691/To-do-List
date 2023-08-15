@@ -4,7 +4,7 @@ import { useState, useEffect, useRef } from "react";
 const ProgressBar = ({ target, total, color }) => {
 	const progressRef = useRef(null);
 
-	let [startedValue, SetStartedValue] = useState(-1);
+	let [startedValue, setStartedValue] = useState(-1);
 
 	let speed_load = 10;
 
@@ -14,9 +14,9 @@ const ProgressBar = ({ target, total, color }) => {
 		let progressLoad;
 		if (progressRef.current) {
 			progressLoad = setInterval(() => {
-				SetStartedValue((prevValue) => {
+				setStartedValue((prevValue) => {
 					const newValue = prevValue + 1;
-					if (newValue === endValue) {
+					if (newValue >= endValue || endValue === 0) {
 						clearInterval(progressLoad);
 					}
 					return newValue;
@@ -31,9 +31,12 @@ const ProgressBar = ({ target, total, color }) => {
 
 	useEffect(() => {
 		if (progressRef.current) {
-			progressRef.current.style.background = `conic-gradient(${color} ${
-				startedValue * 3.6
-			}deg, #32323F 0deg)`;
+			if (endValue !== 0)
+				progressRef.current.style.background = `conic-gradient(${color} ${
+					startedValue * 3.6
+				}deg, #32323F 0deg)`;
+			else
+				progressRef.current.style.background = `conic-gradient(${color} 0deg, #32323F 0deg)`;
 		}
 	}, [startedValue]);
 

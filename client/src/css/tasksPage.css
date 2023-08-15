@@ -72,6 +72,11 @@
     height: 12px;
 }
 
+.uncomplete-task{
+    overflow: hidden;
+}
+
 .complete-task{
     margin-top: 30px;
+    overflow: hidden;
 }

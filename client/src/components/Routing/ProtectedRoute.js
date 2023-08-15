@@ -16,7 +16,9 @@ const ProtectedRoute = ({ component: Component, ...rest }) => {
 	return isAuthenticated ? (
 		<>
 			<Navbar></Navbar>
-			<Component></Component>
+			<div className="page">
+				<Component></Component>
+			</div>
 		</>
 	) : (
 		<Navigate to="/login"></Navigate>

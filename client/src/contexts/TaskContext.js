@@ -15,9 +15,8 @@ const TaskContextProvider = ({ children }) => {
 
 	// State
 	const [taskState, dispatch] = useReducer(taskReducer, {
-		tasks: [],
-		collectionName: "",
-		tasksLoading: true,
+		uncomplete_tasks: [],
+		complete_tasks: [],
 	});
 
 	const getTasks = async (collection_id) => {

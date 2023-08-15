@@ -27,6 +27,7 @@
     "gh-pages": "^5.0.0"
   },
   "dependencies": {
-    "framer-motion": "^10.15.0"
+    "framer-motion": "^10.15.0",
+    "uuid": "^9.0.0"
   }
 }
