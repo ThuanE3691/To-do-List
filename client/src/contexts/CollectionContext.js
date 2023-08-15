@@ -3,9 +3,6 @@ import {
 	API_URL,
 	COLLECTIONS_ADD_SUCCESS,
 	COLLECTIONS_LOADED_SUCCESS,
-	COLLECTION_VIEW_LOADED_SUCCESS,
-	COLLECTION_VIEW_RESET,
-	TASK_UPDATE_SUCCESS,
 } from "./constans";
 import axios from "axios";
 import { CollectionReducer } from "../reducers/collectionReducer";
@@ -17,8 +14,6 @@ const CollectionContextProvider = ({ children }) => {
 	const [collectionState, dispatch] = useReducer(CollectionReducer, {
 		collections: [],
 		collectionsLoading: true,
-		collectionView: {},
-		collectionViewLoading: true,
 	});
 
 	const [isOpenCreateCollection, SetIsOpenCreateCollection] = useState(false);
@@ -51,32 +46,6 @@ const CollectionContextProvider = ({ children }) => {
 						message: "Server error",
 				  };
 		}
-	};
-
-	const getOneCollection = async (id) => {
-		try {
-			const response = await axios.get(`${API_URL}/collections/${id}`);
-			if (response.data.success) {
-				dispatch({
-					type: COLLECTION_VIEW_LOADED_SUCCESS,
-					payload: response.data.collection,
-				});
-			}
-		} catch (error) {
-			return error.response.data
-				? error.response.data
-				: {
-						success: false,
-						message: "Server error",
-				  };
-		}
-	};
-
-	const resetCollectionView = () => {
-		dispatch({
-			type: COLLECTION_VIEW_RESET,
-			payload: {},
-		});
 	};
 
 	const addCollection = async (newCollection) => {
@@ -116,31 +85,6 @@ const CollectionContextProvider = ({ children }) => {
 		});
 	};
 
-	const updateTask = async (task) => {
-		const collection_id = collectionState.collectionView._id;
-		const task_id = task._id;
-
-		try {
-			const response = await axios.put(
-				`${API_URL}/collections/${collection_id}/tasks/${task_id}`,
-				task
-			);
-			if (response.data.success) {
-				dispatch({
-					type: TASK_UPDATE_SUCCESS,
-					payload: response.data.task,
-				});
-			}
-		} catch (error) {
-			return error.response.data
-				? error.response.data
-				: {
-						success: false,
-						message: "Server error",
-				  };
-		}
-	};
-
 	const collectionContextData = {
 		collectionState,
 		getCollections,
@@ -152,9 +96,6 @@ const CollectionContextProvider = ({ children }) => {
 		SetIsCompleteForm,
 		resetCreateCollection,
 		addCollection,
-		getOneCollection,
-		resetCollectionView,
-		updateTask,
 	};
 
 	return (

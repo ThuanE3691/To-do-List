@@ -1,44 +1,57 @@
-import { createContext, useContext, useReducer, useState } from "react";
-import { API_URL, TASKS_LOADED_SUCCESS, TASK_UPDATE_SUCCESS } from "./constans";
+import { createContext, useReducer, useState } from "react";
+import {
+	API_URL,
+	TASK_UPDATE_SUCCESS,
+	COLLECTION_LOADED_SUCCESS,
+	TASKS_UNMOUNT,
+} from "./constans";
 import axios from "axios";
-import { CollectionReducer } from "../reducers/collectionReducer";
-import { CollectionContext } from "./CollectionContext";
 import { taskReducer } from "../reducers/taskReducer";
 
 export const TaskContext = createContext();
 
-const TaskContextProvider = ({ children }) => {
-	const {
-		collectionState: { collectionView, collectionViewLoading },
-		getOneCollection,
-	} = useContext(CollectionContext);
+function tasks_claffication(tasks) {
+	const tasksNotFinish = tasks
+		.filter((item) => item.check === false)
+		.sort((a, b) => new Date(a.create_at) - new Date(b.create_at));
 
+	const tasksFinish = tasks
+		.filter((item) => item.check === true)
+		.sort((a, b) => new Date(a.finish_at) - new Date(b.finish_at));
+
+	return {
+		tasksNotFinish,
+		tasksFinish,
+	};
+}
+
+const TaskContextProvider = ({ children }) => {
 	// State
 	const [taskState, dispatch] = useReducer(taskReducer, {
-		uncomplete_tasks: [],
-		complete_tasks: [],
+		inCollection: {},
+		tasksLoading: true,
 	});
 
-	const getTasks = async (collection_id) => {
-		await getOneCollection(collection_id);
-		if (!collectionViewLoading) {
-			dispatch({
-				type: TASKS_LOADED_SUCCESS,
-				payload: {
-					tasks: collectionView.list_tasks,
-					collectionName: collectionView.name,
-				},
-			});
-		}
-	};
+	const [finishTasks, SetFinishTasks] = useState([]);
+	const [notFinishTasks, SetNotFinishTasks] = useState([]);
 
-	const updateTask = async (collection_id, task_id, updated_task) => {
+	const getTaskFromCollection = async (collection_id) => {
 		try {
-			const response = await axios.put(
-				`${API_URL}/collections/${collection_id}/tasks/${task_id}`,
-				updated_task
+			const response = await axios.get(
+				`${API_URL}/collections/${collection_id}`
 			);
 			if (response.data.success) {
+				dispatch({
+					type: COLLECTION_LOADED_SUCCESS,
+					payload: response.data.collection,
+				});
+
+				const { tasksNotFinish, tasksFinish } = tasks_claffication(
+					response.data.collection.list_tasks
+				);
+
+				SetFinishTasks(tasksFinish);
+				SetNotFinishTasks(tasksNotFinish);
 			}
 		} catch (error) {
 			return error.response.data
@@ -50,7 +63,66 @@ const TaskContextProvider = ({ children }) => {
 		}
 	};
 
-	const taskContextData = { taskState, getTasks, updateTask };
+	const unMountTasks = () => {
+		dispatch({
+			type: TASKS_UNMOUNT,
+			payload: {},
+		});
+
+		SetFinishTasks([]);
+		SetNotFinishTasks([]);
+	};
+
+	const updateTask = async (task, index) => {
+		const collection_id = taskState.inCollection._id;
+		const task_id = task._id;
+
+		try {
+			const response = await axios.put(
+				`${API_URL}/collections/${collection_id}/tasks/${task_id}`,
+				task
+			);
+			if (response.data.success) {
+				dispatch({
+					type: TASK_UPDATE_SUCCESS,
+					payload: response.data.task,
+				});
+
+				// Case update from not finish task to finish
+
+				let new_not_finish_tasks;
+				let new_finish_tasks;
+				if (task.check === true) {
+					new_not_finish_tasks = [...notFinishTasks];
+					new_not_finish_tasks.splice(index, 1);
+					new_finish_tasks = [...finishTasks, task];
+				} else {
+					new_finish_tasks = [...finishTasks];
+					new_finish_tasks.splice(index, 1);
+					new_not_finish_tasks = [...notFinishTasks, task];
+				}
+
+				SetNotFinishTasks(new_not_finish_tasks);
+				SetFinishTasks(new_finish_tasks);
+			}
+		} catch (error) {
+			return error.response.data
+				? error.response.data
+				: {
+						success: false,
+						message: "Server error",
+				  };
+		}
+	};
+
+	const taskContextData = {
+		taskState,
+		finishTasks,
+		notFinishTasks,
+		getTaskFromCollection,
+		updateTask,
+		unMountTasks,
+	};
 
 	return (
 		<TaskContext.Provider value={taskContextData}>

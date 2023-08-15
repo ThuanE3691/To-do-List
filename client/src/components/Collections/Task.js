@@ -1,6 +1,5 @@
 import "../../css/task.css";
 import { motion } from "framer-motion";
-import checkIcon from "../../assets/check.png";
 
 const Task = ({ task_id, name, check }) => {
 	return (

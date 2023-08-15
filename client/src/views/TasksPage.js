@@ -1,5 +1,4 @@
 import "../css/collection.css";
-import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COLLECTION_VIEW } from "../contexts/constans";
@@ -9,81 +8,55 @@ import add from "../assets/add.png";
 import { useNavigate } from "react-router-dom";
 import Task from "../components/Collections/Task";
 import { TaskContext } from "../contexts/TaskContext";
-import { v4 as uuidv4 } from "uuid";
 
-const DisplayTask = ({ collection, updateTask }) => {
-	const handleToggleCheck = async (task) => {
+const DisplayTask = ({ finishTasks, notFinishTasks, updateTask }) => {
+	const handleToggleCheck = async (task, taskIndex) => {
 		const new_task = { ...task, check: !task.check };
-		await updateTask(new_task);
+		await updateTask(new_task, taskIndex);
 	};
 
-	const renderTask = (task) => {
+	const renderTask = (task, index) => {
 		return (
 			<motion.div
-				// initial={{ scale: 0.8, opacity: 0 }}
-				animate={{ scale: 1, opacity: 1 }}
+				initial={{ y: -20, scale: 0.8, opacity: 0 }}
+				animate={{ y: 0, scale: 1, opacity: 1 }}
 				exit={{ scale: 0.8, opacity: 0 }}
-				onClick={() => handleToggleCheck(task)}
-				transition={{}}
+				onClick={() => handleToggleCheck(task, index)}
+				transition={{ duration: 0.3 }}
 				layout
-				key={task.check ? "complete-" : "uncomplete-" + task._id}
+				key={task._id}
 			>
 				<Task name={task.name} check={task.check}></Task>
 			</motion.div>
 		);
 	};
 
-	const tasks_uncomplete = collection.list_tasks
-		.filter((item) => item.check === false)
-		.sort((a, b) => new Date(a.create_at) - new Date(b.create_at));
-
-	const tasks_complete = collection.list_tasks
-		.filter((item) => item.check === true)
-		.sort((a, b) => new Date(a.finish_at) - new Date(b.finish_at));
-
 	return (
 		<div>
 			<div className="uncomplete-task" key="uncomplete">
-				<p>Tasks</p>
+				<p>Tasks - {notFinishTasks.length}</p>
 				<AnimatePresence mode="popLayout">
-					{tasks_uncomplete.map(renderTask)}
+					{notFinishTasks.map(renderTask)}
 				</AnimatePresence>
 			</div>
 			<div className="complete-task" key="complete">
-				<p>Completed</p>
+				<p>Completed - {finishTasks.length}</p>
 				<AnimatePresence mode="popLayout">
-					{tasks_complete.map(renderTask)}
+					{finishTasks.map(renderTask)}
 				</AnimatePresence>
 			</div>
 		</div>
 	);
 };
 
-const TasksPage = () => {
-	const {
-		collectionState: { collectionView, collectionViewLoading },
-		resetCollectionView,
-		getOneCollection,
-		updateTask,
-	} = useContext(CollectionContext);
-
-	const { taskState } = useContext(TaskContext);
-
-	const navigate = useNavigate();
-
-	const onClickBackToCollection = () => {
-		navigate("/collections");
-		resetCollectionView();
-	};
-
-	useEffect(() => {
-		const collection_id = localStorage.getItem(COLLECTION_VIEW);
-		getOneCollection(collection_id);
-	}, []);
-
-	let taskPage = null;
-
-	taskPage = !collectionViewLoading && (
+const TasksContainer = ({
+	inCollection,
+	notFinishTasks,
+	finishTasks,
+	onClickBackToCollection,
+	updateTask,
+}) => {
+	return (
 		<motion.div
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
@@ -100,7 +73,7 @@ const TasksPage = () => {
 					<img src={back} alt="" />
 				</motion.div>
 
-				<div className="task-title">{collectionView.name}</div>
+				<div className="task-title">{inCollection.name}</div>
 			</div>
 			<motion.div
 				className="add-task-area"
@@ -114,12 +87,36 @@ const TasksPage = () => {
 			</motion.div>
 			<div className="task-display-area">
 				<DisplayTask
-					collection={collectionView}
 					updateTask={updateTask}
+					finishTasks={finishTasks}
+					notFinishTasks={notFinishTasks}
 				></DisplayTask>
 			</div>
 		</motion.div>
 	);
+};
+
+const TasksPage = () => {
+	const {
+		taskState: { inCollection, tasksLoading },
+		finishTasks,
+		notFinishTasks,
+		getTaskFromCollection,
+		unMountTasks,
+		updateTask,
+	} = useContext(TaskContext);
+
+	const navigate = useNavigate();
+
+	const onClickBackToCollection = () => {
+		navigate("/collections");
+		unMountTasks();
+	};
+
+	useEffect(() => {
+		const collection_id = localStorage.getItem(COLLECTION_VIEW);
+		getTaskFromCollection(collection_id);
+	}, []);
 
 	return (
 		<motion.div
@@ -133,7 +130,17 @@ const TasksPage = () => {
 				duration: 0.5,
 			}}
 		>
-			<AnimatePresence>{taskPage}</AnimatePresence>
+			<AnimatePresence>
+				{!tasksLoading && (
+					<TasksContainer
+						inCollection={inCollection}
+						notFinishTasks={notFinishTasks}
+						finishTasks={finishTasks}
+						onClickBackToCollection={onClickBackToCollection}
+						updateTask={updateTask}
+					></TasksContainer>
+				)}
+			</AnimatePresence>
 		</motion.div>
 	);
 };
