@@ -6,10 +6,16 @@ import "../css/tasksPage.css";
 import back from "../assets/back.png";
 import add from "../assets/add.png";
 import { useNavigate } from "react-router-dom";
-import Task from "../components/Collections/Task";
+import Task from "../components/Tasks/Task";
 import { TaskContext } from "../contexts/TaskContext";
+import { TaskCreate } from "../components/Tasks/TaskCreate";
 
-const DisplayTask = ({ finishTasks, notFinishTasks, updateTask }) => {
+const DisplayTask = ({
+	finishTasks,
+	notFinishTasks,
+	updateTask,
+	colorDisplay,
+}) => {
 	const handleToggleCheck = async (task, taskIndex) => {
 		const new_task = { ...task, check: !task.check };
 		await updateTask(new_task, taskIndex);
@@ -26,7 +32,11 @@ const DisplayTask = ({ finishTasks, notFinishTasks, updateTask }) => {
 				layout
 				key={task._id}
 			>
-				<Task name={task.name} check={task.check}></Task>
+				<Task
+					name={task.name}
+					check={task.check}
+					colorDisplay={colorDisplay}
+				></Task>
 			</motion.div>
 		);
 	};
@@ -55,6 +65,7 @@ const TasksContainer = ({
 	finishTasks,
 	onClickBackToCollection,
 	updateTask,
+	handleOpenTaskAdd,
 }) => {
 	return (
 		<motion.div
@@ -79,8 +90,12 @@ const TasksContainer = ({
 				className="add-task-area"
 				whileHover={{ opacity: 0.6 }}
 				transition={{ duration: 0.2 }}
+				onClick={handleOpenTaskAdd}
 			>
-				<div className="add-task-icon">
+				<div
+					className="add-task-icon"
+					style={{ backgroundColor: inCollection.color }}
+				>
 					<img src={add} alt="" />
 				</div>
 				<p>Add a task</p>
@@ -90,12 +105,32 @@ const TasksContainer = ({
 					updateTask={updateTask}
 					finishTasks={finishTasks}
 					notFinishTasks={notFinishTasks}
+					colorDisplay={inCollection.color}
 				></DisplayTask>
 			</div>
 		</motion.div>
 	);
 };
 
+const pageVariants = {
+	enter: {
+		opacity: 0,
+	},
+	normal: {
+		opacity: 1,
+	},
+	showTaskCreate: {
+		filter: "blur(6px)",
+		opacity: 1,
+		transition: {
+			duration: 0.2,
+		},
+		pointerEvents: "none",
+	},
+	exit: {
+		opacity: 0,
+	},
+};
 const TasksPage = () => {
 	const {
 		taskState: { inCollection, tasksLoading },
@@ -104,6 +139,8 @@ const TasksPage = () => {
 		getTaskFromCollection,
 		unMountTasks,
 		updateTask,
+		showAddTask,
+		SetShowAddTask,
 	} = useContext(TaskContext);
 
 	const navigate = useNavigate();
@@ -113,35 +150,58 @@ const TasksPage = () => {
 		unMountTasks();
 	};
 
+	const handleOpenTaskAdd = () => {
+		SetShowAddTask(true);
+	};
+
+	const handleCloseTaskAdd = () => {
+		SetShowAddTask(false);
+	};
+
 	useEffect(() => {
 		const collection_id = localStorage.getItem(COLLECTION_VIEW);
 		getTaskFromCollection(collection_id);
 	}, []);
 
 	return (
-		<motion.div
-			key="task-page"
-			className="pg-task-container"
-			initial={{ opacity: 0 }}
-			animate={{ opacity: 1 }}
-			exit={{ opacity: 0 }}
-			transition={{
-				type: "tween",
-				duration: 0.5,
-			}}
-		>
+		<>
+			<motion.div
+				key="task-page"
+				className="pg-task-container"
+				variants={pageVariants}
+				initial="enter"
+				animate={showAddTask ? "showTaskCreate" : "normal"}
+				exit="exit"
+				transition={{
+					type: "tween",
+					duration: 0.5,
+				}}
+			>
+				<AnimatePresence>
+					{!tasksLoading && (
+						<>
+							<TasksContainer
+								inCollection={inCollection}
+								notFinishTasks={notFinishTasks}
+								finishTasks={finishTasks}
+								onClickBackToCollection={onClickBackToCollection}
+								updateTask={updateTask}
+								handleOpenTaskAdd={handleOpenTaskAdd}
+							></TasksContainer>
+						</>
+					)}
+				</AnimatePresence>
+			</motion.div>
 			<AnimatePresence>
-				{!tasksLoading && (
-					<TasksContainer
-						inCollection={inCollection}
-						notFinishTasks={notFinishTasks}
-						finishTasks={finishTasks}
-						onClickBackToCollection={onClickBackToCollection}
-						updateTask={updateTask}
-					></TasksContainer>
+				{showAddTask && (
+					<TaskCreate
+						collectionName={inCollection.name}
+						color={inCollection.color}
+						handleCloseTaskAdd={handleCloseTaskAdd}
+					></TaskCreate>
 				)}
 			</AnimatePresence>
-		</motion.div>
+		</>
 	);
 };
 

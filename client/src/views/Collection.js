@@ -4,7 +4,7 @@ import Collection from "../components/Collections/Collection";
 import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { COLLECTION_VIEW } from "../contexts/constans";
 
@@ -96,7 +96,9 @@ const CollectionPage = () => {
 					</motion.div>
 				</motion.div>
 			</motion.div>
-			<CollectionCreate></CollectionCreate>
+			<AnimatePresence>
+				{isOpenCreateCollection && <CollectionCreate></CollectionCreate>}
+			</AnimatePresence>
 		</>
 	);
 };

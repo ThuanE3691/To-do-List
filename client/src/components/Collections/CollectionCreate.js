@@ -33,7 +33,6 @@ const CollectionCreate = () => {
 		isCompleteForm,
 		SetIsCompleteForm,
 		resetCreateCollection,
-		isOpenCreateCollection,
 		SetIsOpenCreateCollection,
 		addCollection,
 	} = useContext(CollectionContext);
@@ -77,10 +76,11 @@ const CollectionCreate = () => {
 
 	return (
 		<motion.div
-			className={`collection-box-create ${
-				isOpenCreateCollection ? "active" : ""
-			}`}
-			exit={{ opacity: 0 }}
+			className={`collection-box-create active`}
+			initial={{ opacity: 0, y: -10 }}
+			animate={{ opacity: 1, y: 0 }}
+			exit={{ opacity: 0, y: -10 }}
+			key="collection-create"
 		>
 			<Form>
 				<div className="c-box-head">
@@ -88,7 +88,7 @@ const CollectionCreate = () => {
 					<img src={close} alt="close" onClick={onCloseCreateCollection} />
 				</div>
 				<div className="c-box-name">
-					<p>Collection Name</p>
+					<p>Name</p>
 					<input
 						className={isCompleteForm["name"] ? "not-fill" : ""}
 						placeholder="Collection Name"

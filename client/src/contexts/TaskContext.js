@@ -35,6 +35,8 @@ const TaskContextProvider = ({ children }) => {
 	const [finishTasks, SetFinishTasks] = useState([]);
 	const [notFinishTasks, SetNotFinishTasks] = useState([]);
 
+	const [showAddTask, SetShowAddTask] = useState(false);
+
 	const getTaskFromCollection = async (collection_id) => {
 		try {
 			const response = await axios.get(
@@ -122,6 +124,8 @@ const TaskContextProvider = ({ children }) => {
 		getTaskFromCollection,
 		updateTask,
 		unMountTasks,
+		showAddTask,
+		SetShowAddTask,
 	};
 
 	return (

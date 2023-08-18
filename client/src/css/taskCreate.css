@@ -1,0 +1,78 @@
+.task-create-container{
+    position: absolute;
+    background-color: #21212b;
+    width: 400px;
+    height: fit-content;
+    padding: 30px 20px;
+    border-radius: 12px;
+    top: 15%;
+    left: 38%;
+    font-family: "Inter";
+    color: rgba(255, 255, 255, 0.799);
+} 
+
+.task-create-input input{
+    width: 100%;
+    padding: 10px 15px;
+    background-color: transparent;
+    border-radius: 12px;
+    outline: none;
+    border: #32323F 3px solid;
+    font-weight: 500;
+}
+
+.task-create-middle{
+    display: flex;
+    margin-top: 15px;
+    gap: 20px;
+}
+
+.task-create-collection,.task-create-date{
+    border-radius: 12px;
+    border: #32323F 3px solid;
+    padding: 10px;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.task-create-collection img{
+    width: 20px;
+    height: 20px;
+}
+
+.task-create-date img{
+    width: 20px;
+    height: 20px;
+    filter: invert(62%) sepia(23%) saturate(1157%) hue-rotate(91deg) brightness(97%) contrast(78%);
+}
+
+.task-create-bottom{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-top: 30px;
+}
+
+.task-create-bottom button{
+    padding: 15px 30px;
+    color: white;
+    border-radius: 12px;
+    font-size: 15px;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.task-create-bottom button:hover{
+    opacity: 60%;
+}
+
+.task-create-add{
+    background-image: linear-gradient(to top right,#C446D5 15%, #FF9F7C 75%);
+}
+
+.task-create-cancel{
+    background-color: #32323F;
+}

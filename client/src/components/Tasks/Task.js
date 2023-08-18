@@ -1,7 +1,7 @@
 import "../../css/task.css";
 import { motion } from "framer-motion";
 
-const Task = ({ task_id, name, check }) => {
+const Task = ({ name, check, colorDisplay }) => {
 	return (
 		<motion.div
 			className="task-container"
@@ -10,7 +10,13 @@ const Task = ({ task_id, name, check }) => {
 		>
 			<div className="task-top">
 				<div className="task-left">
-					<motion.div className={`task-checkbox ${check ? "complete" : ""}`}>
+					<motion.div
+						className={`task-checkbox ${check ? "complete" : ""}`}
+						style={{
+							backgroundColor: check ? colorDisplay : "transparent",
+							borderColor: colorDisplay,
+						}}
+					>
 						{check && (
 							<svg
 								version="1.0"
