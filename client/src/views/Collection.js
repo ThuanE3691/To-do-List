@@ -1,6 +1,6 @@
 import "../css/collection.css";
-import add from "../assets/add.png";
-import Collection from "../components/Collections/Collection";
+import add from "../assets/Other/add.png";
+import Collection from "../components/Collections/Collection.js";
 import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
 import { useContext, useEffect } from "react";
@@ -87,13 +87,19 @@ const CollectionPage = () => {
 				</div>
 				<motion.div className="collections-body">
 					{collectionsBody}
-					<motion.div
-						className="collection-create"
-						onClick={openCreateCollection}
-						key="motion-create"
-					>
-						<img src={add} alt="Create collection" />
-					</motion.div>
+					{!collectionsLoading && (
+						<motion.div
+							className="collection-create"
+							onClick={openCreateCollection}
+							key="motion-create"
+							initial={{ opacity: 0 }}
+							animate={{ opacity: 1 }}
+							exit={{ opacity: 0 }}
+							delay={{ delay: 0.1 * collections.length, duration: 0.2 }}
+						>
+							<img src={add} alt="Create collection" />
+						</motion.div>
+					)}
 				</motion.div>
 			</motion.div>
 			<AnimatePresence>

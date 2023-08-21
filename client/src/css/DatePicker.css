@@ -1,0 +1,124 @@
+.date-picker-container{
+    position: absolute;
+    background-color: white;
+    font-family: "Inter";
+    top: 15%;
+    left: 65%;
+    padding: 20px;
+    color: black;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.date-picker-heading{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.date-picker-icon{
+    border: rgba(0, 0, 0, 0.212) 2px solid;
+    border-radius: 8px;
+    padding: 8px;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.date-picker-icon:hover{
+    opacity: 0.5;
+}
+
+.date-picker-icon:first-of-type, .date-picker-icon:last-of-type{
+    padding: 10px;
+}
+
+.date-picker-display-date{
+    padding: 0 15px;
+}
+
+.date-picker-heading img{
+    width: 12px;
+    height: 12px;
+}
+
+.date-picker-prev-month img, .date-picker-next-month img{
+    width: 16px;
+    height: 16px;
+}
+
+.date-picker-body{
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    font-weight: 500;
+    flex-direction: row;
+    gap: 7px;
+}
+
+.date-picker-column{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.date-picker-unit-container{
+    display: flex;
+    flex-direction: column;
+}
+
+.date-picker-date-article{
+    color: rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+
+.date-picker-date-unit{
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.date-picker-date-unit.ticked{
+    background-color: black;
+    color: white;
+}
+
+
+.date-picker-date-unit.not-tick{
+    color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+}
+
+.date-picker-date-unit.today{
+    background-color: #F2F2F2;
+    color: black;
+}
+
+.date-picker-bottom{
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 450;
+    gap: 10px;
+}
+
+.date-picker-bottom button{
+    padding: 8px 45px;
+    border-radius: 8px;
+}
+
+.date-picker-bottom :first-child{
+    border: rgba(0, 0, 0, 0.212) 2px solid;
+}
+
+.date-picker-bottom :last-child{
+    background-color: black;
+    color: white;
+    padding: 8px 50px;
+}
