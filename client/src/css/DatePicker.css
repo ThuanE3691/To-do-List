@@ -38,7 +38,9 @@
 }
 
 .date-picker-display-date{
-    padding: 0 15px;
+    width: 120px;
+    text-align: center;
+    /* padding: 0 15px; */
 }
 
 .date-picker-heading img{
@@ -81,6 +83,7 @@
     cursor: pointer;
     padding: 10px;
     border-radius: 8px;
+    transition: all 0.2 ease-in-out;
 }
 
 .date-picker-date-unit.ticked{

@@ -8,6 +8,12 @@ import { useState } from "react";
 
 export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 	const [showDatePicker, SetShowDatePicker] = useState(false);
+	const [dateDisplay, SetDateDisplay] = useState({
+		year: null,
+		month: null,
+		date_array: [],
+	});
+	const [dateActive, SetDateActive] = useState(null);
 
 	const handleShowDatePicker = () => {
 		SetShowDatePicker((prev) => !prev);
@@ -74,7 +80,11 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 						onClick={handleShowDatePicker}
 					>
 						<img src={calendar} alt="" />
-						<p>Date</p>
+						<p>
+							{dateActive === null
+								? "Date"
+								: `${dateActive.day} - ${dateActive.month} - ${dateActive.year}`}
+						</p>
 					</motion.div>
 				</div>
 				<div className="task-create-bottom">
@@ -85,7 +95,15 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 				</div>
 			</motion.div>
 			<AnimatePresence>
-				{showDatePicker && <DatePicker></DatePicker>}
+				{showDatePicker && (
+					<DatePicker
+						handleShowDatePicker={handleShowDatePicker}
+						dateDisplay={dateDisplay}
+						SetDateDisplay={SetDateDisplay}
+						dateActive={dateActive}
+						SetDateActive={SetDateActive}
+					></DatePicker>
+				)}
 			</AnimatePresence>
 		</>
 	);

@@ -24,9 +24,9 @@ const DisplayTask = ({
 	const renderTask = (task, index) => {
 		return (
 			<motion.div
-				initial={{ y: -20, scale: 0.8, opacity: 0 }}
+				initial={{ y: -20, scale: 0.6, opacity: 0 }}
 				animate={{ y: 0, scale: 1, opacity: 1 }}
-				exit={{ scale: 0.8, opacity: 0 }}
+				exit={{ scale: 0.6, opacity: 0 }}
 				onClick={() => handleToggleCheck(task, index)}
 				transition={{ duration: 0.3 }}
 				layout
