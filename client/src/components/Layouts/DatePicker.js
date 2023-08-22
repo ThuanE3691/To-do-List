@@ -24,6 +24,18 @@ const dateVariant = {
 	},
 };
 
+const buttonVariants = {
+	apply: {
+		opacity: 0.5,
+	},
+	cancel: {
+		opacity: 0.6,
+	},
+	transition: {
+		duration: 0.2,
+	},
+};
+
 const DateDisplayRender = ({
 	dateDisplay,
 	monthLabel,
@@ -154,40 +166,40 @@ const DatePicker = ({
 
 	const dateGenerator = (date) => {
 		let date_array = [["Mo"], ["Tu"], ["We"], ["Th"], ["Fr"], ["Sa"], ["Su"]];
-		let day_display = 1;
-		let month_of_day = date.monthNumber;
 
 		const dateBegin = getDayOfWeek(date.year, date.monthNumber);
 		const lastDateOfPrevMonth = getNumDayOfMonth(date.year, date.monthNumber);
 		const endOfCurrentMonth = getNumDayOfMonth(date.year, date.monthNumber + 1);
 
-		let count_prev = 0;
-		for (let i = dateBegin - 1; i >= 0; i--) {
-			date_array[i].push({
-				day: lastDateOfPrevMonth - count_prev,
-				month: monthLabel[date.monthNumber - 1],
-				monthNumber: date.monthNumber - 1,
-				year: date.year,
-			});
+		let date_render = {
+			day: lastDateOfPrevMonth - dateBegin + 1,
+			month: monthLabel[date.monthNumber - 1],
+			monthNumber: date.monthNumber - 1,
+			year: date.year,
+		};
 
-			count_prev += 1;
-		}
+		const isInTheLastMonth = (monthCheck, endOfMonth) => {
+			return (
+				date_render.monthNumber === monthCheck && date_render.day >= endOfMonth
+			);
+		};
+
+		const nextMonth = () => {
+			date_render.day = 1;
+			date_render.monthNumber += 1;
+			date_render.month = monthLabel[date_render.monthNumber];
+		};
 
 		for (let row = 0; row < 6; row++) {
 			for (let week_day = 0; week_day < 7; week_day++) {
-				if (row === 0 && week_day < dateBegin) continue;
+				date_array[week_day].push({ ...date_render });
 
-				date_array[week_day].push({
-					day: day_display,
-					month: monthLabel[month_of_day],
-					monthNumber: month_of_day,
-					year: date.year,
-				});
-
-				if (day_display >= endOfCurrentMonth) {
-					day_display = 1;
-					month_of_day += 1;
-				} else day_display += 1;
+				if (
+					isInTheLastMonth(date.monthNumber, endOfCurrentMonth) ||
+					isInTheLastMonth(date.monthNumber - 1, lastDateOfPrevMonth)
+				) {
+					nextMonth(date_render);
+				} else date_render.day += 1;
 			}
 		}
 
@@ -291,15 +303,17 @@ const DatePicker = ({
 			</div>
 			<div className="date-picker-bottom">
 				<motion.button
-					whileHover={{ opacity: 0.5 }}
-					transition={{ duration: 0.2 }}
+					variants={buttonVariants}
+					whileHover="apply"
+					transition="transition"
 					onClick={handleShowDatePicker}
 				>
 					Cancel
 				</motion.button>
 				<motion.button
-					whileHover={{ opacity: 0.6 }}
-					transition={{ duration: 0.2 }}
+					variants={buttonVariants}
+					whileHover="apply"
+					transition="transition"
 				>
 					Apply
 				</motion.button>

@@ -6,6 +6,35 @@ import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "../Layouts/DatePicker";
 import { useState } from "react";
 
+const taskVariants = {
+	enter: {
+		opacity: 0,
+		y: -10,
+	},
+	display: {
+		opacity: 1,
+		y: 0,
+		filter: "blur(0px)",
+		transition: {
+			delay: 0.2,
+			duration: 0.2,
+		},
+	},
+	exit: {
+		opacity: 0,
+		y: -10,
+	},
+};
+
+const itemVariants = {
+	whileHover: {
+		opacity: 0.6,
+	},
+	transition: {
+		duration: 0.2,
+	},
+};
+
 export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 	const [showDatePicker, SetShowDatePicker] = useState(false);
 	const [dateDisplay, SetDateDisplay] = useState({
@@ -27,23 +56,10 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 	return (
 		<>
 			<motion.div
-				initial={{
-					opacity: 0,
-					y: -10,
-				}}
-				animate={{
-					opacity: 1,
-					y: 0,
-					filter: "blur(0px)",
-					transition: {
-						delay: 0.2,
-						duration: 0.2,
-					},
-				}}
-				exit={{
-					opacity: 0,
-					y: -10,
-				}}
+				variants={taskVariants}
+				initial="enter"
+				animate="display"
+				exit="exit"
 				className="task-create-container"
 				key="task-create"
 			>
@@ -53,12 +69,9 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 				<div className="task-create-middle">
 					<motion.div
 						className="task-create-collection"
-						whileHover={{
-							opacity: 0.6,
-						}}
-						transition={{
-							duration: 0.2,
-						}}
+						variants={itemVariants}
+						whileHover="whileHover"
+						transition="transition"
 					>
 						<img
 							src={folder}
@@ -71,12 +84,9 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 					</motion.div>
 					<motion.div
 						className="task-create-date"
-						whileHover={{
-							opacity: 0.6,
-						}}
-						transition={{
-							duration: 0.2,
-						}}
+						variants={itemVariants}
+						whileHover="whileHover"
+						transition="transition"
 						onClick={handleShowDatePicker}
 					>
 						<img src={calendar} alt="" />
