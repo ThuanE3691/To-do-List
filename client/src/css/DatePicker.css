@@ -91,8 +91,13 @@
     color: white;
 }
 
-
 .date-picker-date-unit.not-tick{
+    color: rgba(0, 0, 0, 0.5);
+    cursor: default;
+    pointer-events: none;
+}
+
+.date-picker-date-unit.can-ticked{
     color: rgba(0, 0, 0, 0.5);
     cursor: default;
 }

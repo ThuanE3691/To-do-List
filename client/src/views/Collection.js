@@ -95,7 +95,7 @@ const CollectionPage = () => {
 							initial={{ opacity: 0 }}
 							animate={{ opacity: 1 }}
 							exit={{ opacity: 0 }}
-							delay={{ delay: 0.1 * collections.length, duration: 0.2 }}
+							transition={{ delay: 0.1 * collections.length, duration: 0.2 }}
 						>
 							<img src={add} alt="Create collection" />
 						</motion.div>

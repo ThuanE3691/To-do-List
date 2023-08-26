@@ -1,7 +1,12 @@
 import "../../css/task.css";
+import calendar from "../../assets/Task/calendar.png";
+import { generateFilter } from "../../utils/filterGenerator.js";
 import { motion } from "framer-motion";
 
-const Task = ({ name, check, colorDisplay }) => {
+const Task = ({ name, check, colorDisplay, deadline }) => {
+	const deadlineDate = `${deadline.getDate()} - ${
+		deadline.getMonth() + 1
+	} - ${deadline.getFullYear()}`;
 	return (
 		<motion.div
 			className="task-container"
@@ -45,8 +50,19 @@ const Task = ({ name, check, colorDisplay }) => {
 					<motion.div className="task-name">{name}</motion.div>
 				</div>
 			</div>
-			<div className="task-sub-tasks"></div>
-			<div className="task-deadline"></div>
+			<div className="task-bottom">
+				<div className="task-sub-tasks"></div>
+				<div className="task-deadline">
+					<img
+						src={calendar}
+						alt=""
+						style={{
+							filter: generateFilter(colorDisplay),
+						}}
+					/>
+					<p style={{ color: colorDisplay }}>{deadlineDate}</p>
+				</div>
+			</div>
 		</motion.div>
 	);
 };

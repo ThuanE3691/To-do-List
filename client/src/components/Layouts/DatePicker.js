@@ -104,8 +104,8 @@ const DatePicker = ({
 
 	const today = {
 		day: new Date().getDate(),
-		month: monthLabel[new Date().getMonth()],
-		monthNumber: new Date().getMonth(),
+		month: new Date().getMonth(),
+		monthLabel: monthLabel[new Date().getMonth()],
 		year: new Date().getFullYear(),
 	};
 
@@ -120,20 +120,23 @@ const DatePicker = ({
 	const isTickedDate = (date) => {
 		return (
 			date.day === dateActive.day &&
-			date.monthNumber === dateActive.monthNumber &&
+			date.month === dateActive.month &&
 			date.year === dateActive.year
 		);
 	};
 
 	const isNotTickedDate = (date) => {
 		return (
-			date.monthNumber !== dateDisplay.month ||
 			dateDisplay.year < today.year ||
-			(dateDisplay.month < today.monthNumber && date.year <= today.year) ||
-			(date.monthNumber === today.monthNumber &&
+			(dateDisplay.month < today.month && date.year <= today.year) ||
+			(date.month === today.month &&
 				date.year === today.year &&
 				date.day < today.day)
 		);
+	};
+
+	const isCanTickedDate = (date) => {
+		return dateDisplay.month !== date.month;
 	};
 
 	const getDateClassName = (date, index) => {
@@ -145,13 +148,14 @@ const DatePicker = ({
 			if (isNotTickedDate(date)) return base_name + " not-tick";
 			if (isTickedDate(date)) return base_name + " ticked";
 			if (isToday(date)) return base_name + " today";
+			if (isCanTickedDate(date)) return base_name + " can-ticked";
 
 			return base_name;
 		}
 	};
 
-	const getNumDayOfMonth = (year, month) => {
-		return new Date(year, month, 0).getDate();
+	const getLastMonthDate = (year, month) => {
+		return new Date(year, month, 0);
 	};
 
 	const getDayOfWeek = (year, month) => {
@@ -167,37 +171,44 @@ const DatePicker = ({
 	const dateGenerator = (date) => {
 		let date_array = [["Mo"], ["Tu"], ["We"], ["Th"], ["Fr"], ["Sa"], ["Su"]];
 
-		const dateBegin = getDayOfWeek(date.year, date.monthNumber);
-		const lastDateOfPrevMonth = getNumDayOfMonth(date.year, date.monthNumber);
-		const endOfCurrentMonth = getNumDayOfMonth(date.year, date.monthNumber + 1);
+		const dateBegin = getDayOfWeek(date.year, date.month);
+		const prevMonth = getLastMonthDate(date.year, date.month);
+		const currentMonth = getLastMonthDate(date.year, date.month + 1);
 
 		let date_render = {
-			day: lastDateOfPrevMonth - dateBegin + 1,
-			month: monthLabel[date.monthNumber - 1],
-			monthNumber: date.monthNumber - 1,
-			year: date.year,
+			day: prevMonth.getDate() - dateBegin + 1,
+			month: prevMonth.getMonth(),
+			year: prevMonth.getFullYear(),
 		};
 
-		const isInTheLastMonth = (monthCheck, endOfMonth) => {
+		if (date_render.day === 32) {
+			date_render.day = 1;
+			date_render.month = date.month;
+			date_render.year = date.year;
+		}
+
+		const isInTheLastMonth = (month) => {
 			return (
-				date_render.monthNumber === monthCheck && date_render.day >= endOfMonth
+				date_render.month === month.getMonth() &&
+				date_render.day >= month.getDate()
 			);
 		};
 
 		const nextMonth = () => {
 			date_render.day = 1;
-			date_render.monthNumber += 1;
-			date_render.month = monthLabel[date_render.monthNumber];
+			if (date_render.month !== 11) {
+				date_render.month += 1;
+			} else {
+				date_render.month = 0;
+				date_render.year += 1;
+			}
 		};
 
 		for (let row = 0; row < 6; row++) {
 			for (let week_day = 0; week_day < 7; week_day++) {
 				date_array[week_day].push({ ...date_render });
 
-				if (
-					isInTheLastMonth(date.monthNumber, endOfCurrentMonth) ||
-					isInTheLastMonth(date.monthNumber - 1, lastDateOfPrevMonth)
-				) {
+				if (isInTheLastMonth(prevMonth) || isInTheLastMonth(currentMonth)) {
 					nextMonth(date_render);
 				} else date_render.day += 1;
 			}
@@ -205,8 +216,8 @@ const DatePicker = ({
 
 		SetDateDisplay({
 			...dateDisplay,
+			month: date.month,
 			year: date.year,
-			month: date.monthNumber,
 			date_array,
 		});
 	};
@@ -215,7 +226,7 @@ const DatePicker = ({
 		switch (type) {
 			case PREV_MONTH:
 				dateGenerator({
-					monthNumber: dateDisplay.month - 1 >= 0 ? dateDisplay.month - 1 : 11,
+					month: dateDisplay.month - 1 >= 0 ? dateDisplay.month - 1 : 11,
 					year:
 						dateDisplay.month - 1 >= 0
 							? dateDisplay.year
@@ -224,7 +235,7 @@ const DatePicker = ({
 				break;
 			case NEXT_MONTH:
 				dateGenerator({
-					monthNumber: dateDisplay.month + 1 <= 11 ? dateDisplay.month + 1 : 0,
+					month: dateDisplay.month + 1 <= 11 ? dateDisplay.month + 1 : 0,
 					year:
 						dateDisplay.month + 1 <= 11
 							? dateDisplay.year
@@ -233,13 +244,13 @@ const DatePicker = ({
 				break;
 			case PREV_YEAR:
 				dateGenerator({
-					monthNumber: dateDisplay.month,
+					month: dateDisplay.month,
 					year: dateDisplay.year - 1,
 				});
 				break;
 			case NEXT_YEAR:
 				dateGenerator({
-					monthNumber: dateDisplay.month,
+					month: dateDisplay.month,
 					year: dateDisplay.year + 1,
 				});
 				break;

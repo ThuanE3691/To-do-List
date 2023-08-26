@@ -2,6 +2,7 @@ import {
 	COLLECTION_LOADED_SUCCESS,
 	TASKS_UNMOUNT,
 	TASK_UPDATE_SUCCESS,
+	TASK_ADDED_SUCCESS,
 } from "../contexts/constans";
 
 function update_tasks(tasks, task_update) {
@@ -38,6 +39,14 @@ export const taskReducer = (state, action) => {
 				inCollection: {
 					...state.inCollection,
 					list_tasks: tasks_after_upgrade,
+				},
+			};
+		case TASK_ADDED_SUCCESS:
+			return {
+				...state,
+				inCollection: {
+					...state.inCollection,
+					list_tasks: [...state.inCollection.list_tasks, payload],
 				},
 			};
 		default:

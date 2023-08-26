@@ -4,6 +4,7 @@ import {
 	TASK_UPDATE_SUCCESS,
 	COLLECTION_LOADED_SUCCESS,
 	TASKS_UNMOUNT,
+	TASK_ADDED_SUCCESS,
 } from "./constans";
 import axios from "axios";
 import { taskReducer } from "../reducers/taskReducer";
@@ -54,6 +55,31 @@ const TaskContextProvider = ({ children }) => {
 
 				SetFinishTasks(tasksFinish);
 				SetNotFinishTasks(tasksNotFinish);
+			}
+		} catch (error) {
+			return error.response.data
+				? error.response.data
+				: {
+						success: false,
+						message: "Server error",
+				  };
+		}
+	};
+
+	const addNewTask = async (new_task, collection_id) => {
+		try {
+			const response = await axios.post(
+				`${API_URL}/collections/${collection_id}/tasks`,
+				new_task
+			);
+
+			if (response.data.success) {
+				dispatch({
+					type: TASK_ADDED_SUCCESS,
+					payload: response.data.task,
+				});
+
+				SetNotFinishTasks([...notFinishTasks, response.data.task]);
 			}
 		} catch (error) {
 			return error.response.data
@@ -126,6 +152,7 @@ const TaskContextProvider = ({ children }) => {
 		unMountTasks,
 		showAddTask,
 		SetShowAddTask,
+		addNewTask,
 	};
 
 	return (

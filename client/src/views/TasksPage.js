@@ -36,6 +36,7 @@ const DisplayTask = ({
 					name={task.name}
 					check={task.check}
 					colorDisplay={colorDisplay}
+					deadline={new Date(task.deadline)}
 				></Task>
 			</motion.div>
 		);
@@ -141,6 +142,7 @@ const TasksPage = () => {
 		updateTask,
 		showAddTask,
 		SetShowAddTask,
+		addNewTask,
 	} = useContext(TaskContext);
 
 	const navigate = useNavigate();
@@ -195,9 +197,9 @@ const TasksPage = () => {
 			<AnimatePresence>
 				{showAddTask && (
 					<TaskCreate
-						collectionName={inCollection.name}
-						color={inCollection.color}
+						inCollection={inCollection}
 						handleCloseTaskAdd={handleCloseTaskAdd}
+						addNewTask={addNewTask}
 					></TaskCreate>
 				)}
 			</AnimatePresence>

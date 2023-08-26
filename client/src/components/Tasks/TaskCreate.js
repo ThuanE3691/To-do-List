@@ -35,7 +35,11 @@ const itemVariants = {
 	},
 };
 
-export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
+export const TaskCreate = ({
+	inCollection,
+	handleCloseTaskAdd,
+	addNewTask,
+}) => {
 	const [showDatePicker, SetShowDatePicker] = useState(false);
 	const [dateDisplay, SetDateDisplay] = useState({
 		year: null,
@@ -44,6 +48,8 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 	});
 	const [dateActive, SetDateActive] = useState(null);
 
+	const [taskName, SetTaskName] = useState("");
+
 	const handleShowDatePicker = () => {
 		SetShowDatePicker((prev) => !prev);
 	};
@@ -51,6 +57,21 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 	const handleCloseBox = () => {
 		SetShowDatePicker(false);
 		handleCloseTaskAdd();
+	};
+
+	const handleAddTask = async (event) => {
+		event.preventDefault();
+
+		if (taskName === "" || dateActive === null) return;
+
+		const new_task = {
+			name: taskName,
+			check: false,
+			deadline: new Date(dateActive.year, dateActive.month, dateActive.day),
+		};
+
+		await addNewTask(new_task, inCollection._id);
+		handleCloseBox();
 	};
 
 	return (
@@ -64,7 +85,11 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 				key="task-create"
 			>
 				<div className="task-create-input">
-					<input placeholder="Your task"></input>
+					<input
+						placeholder="Your task"
+						value={taskName}
+						onChange={(e) => SetTaskName(e.target.value)}
+					></input>
 				</div>
 				<div className="task-create-middle">
 					<motion.div
@@ -77,10 +102,10 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 							src={folder}
 							alt=""
 							style={{
-								filter: generateFilter(color),
+								filter: generateFilter(inCollection.color),
 							}}
 						/>
-						<p>{collectionName}</p>
+						<p>{inCollection.name}</p>
 					</motion.div>
 					<motion.div
 						className="task-create-date"
@@ -93,12 +118,16 @@ export const TaskCreate = ({ collectionName, color, handleCloseTaskAdd }) => {
 						<p>
 							{dateActive === null
 								? "Date"
-								: `${dateActive.day} - ${dateActive.month} - ${dateActive.year}`}
+								: `${dateActive.day} - ${dateActive.month + 1} - ${
+										dateActive.year
+								  }`}
 						</p>
 					</motion.div>
 				</div>
 				<div className="task-create-bottom">
-					<button className="task-create-add">Add Task</button>
+					<button className="task-create-add" onClick={(e) => handleAddTask(e)}>
+						Add Task
+					</button>
 					<button className="task-create-cancel" onClick={handleCloseBox}>
 						Cancel
 					</button>
