@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Collection = require("../models/Collection.js");
+const Task = require("../models/Task.js");
 const axios = require("axios");
 const verifyToken = require("../middleware/auth.js");
 const { verify } = require("jsonwebtoken");
@@ -91,6 +92,80 @@ router.get("/:id", verifyToken, async (req, res) => {
 				message: "Find Collection Successfully",
 				collection: collection,
 			});
+		} else {
+			return res.status(404).json({
+				success: false,
+				message: "Collection Not Found",
+			});
+		}
+	} catch (error) {
+		res.status(400).json({
+			success: false,
+			message: "Internal Server",
+			error: error.message,
+		});
+	}
+});
+
+/// Delete all task in a collection
+
+router.delete("/:id", verifyToken, async (req, res) => {
+	try {
+		const collectionFindCondition = {
+			_id: req.params.id,
+			user: req.user_id,
+		};
+		const collection = await Collection.findOne(collectionFindCondition);
+		if (collection) {
+			let total_task = collection.list_tasks.length;
+
+			const taskDeletePromises = [];
+
+			for (const task_id of collection.list_tasks) {
+				const taskDeleteCondition = {
+					_id: task_id,
+					user: req.user_id,
+					in_collection: req.params.id,
+				};
+
+				const taskDeletePromise = Task.findOneAndDelete(taskDeleteCondition);
+				taskDeletePromises.push(taskDeletePromise);
+			}
+
+			try {
+				const deletedTasks = await Promise.all(taskDeletePromises);
+
+				const successfullyDeletedTasks = deletedTasks.filter(
+					(task) => task !== null
+				);
+
+				const unsuccessDeleteTasks = deletedTasks.filter(
+					(task) => task === null
+				);
+
+				const deletedTaskCount = successfullyDeletedTasks.length;
+
+				collection.list_tasks = unsuccessDeleteTasks;
+				await collection.save();
+
+				if (unsuccessDeleteTasks.length > 0) {
+					return res.json({
+						success: false,
+						message: `Just deleted ${deletedTaskCount} tasks successfully, ${unsuccessDeleteTasks.length} tasks is not found`,
+						collection: collection,
+					});
+				} else {
+					return res.json({
+						success: true,
+						message: `Successfully deleted ${deletedTaskCount} out of ${total_task} tasks`,
+						collection: collection,
+					});
+				}
+			} catch (error) {
+				return res
+					.status(500)
+					.json({ error: "An error occurred while deleting tasks" });
+			}
 		} else {
 			return res.status(404).json({
 				success: false,

@@ -57,7 +57,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// GET One Collections
-GET http://localhost:5000/api/collections/64cbd43f99f76b706e823121
+GET http://localhost:5000/api/collections/64e6251990f6b52758f0a8e2
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 
@@ -73,5 +73,11 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// Delete TASK
-DELETE http://localhost:5000/api/collections/647491d07948fe185d1965d4/tasks/6474920b7948fe185d1965dd
+DELETE http://localhost:5000/api/collections/64e6251990f6b52758f0a8e2/tasks/64eb14fadce06c13609bf88b
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
+
+
+########################################################
+/// Delete Collection
+DELETE http://localhost:5000/api/collections/64eaf2cbdce06c13609bf7c4
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
