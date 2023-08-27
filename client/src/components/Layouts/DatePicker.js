@@ -3,8 +3,10 @@ import left_arrow from "../../assets/DatePicker/left_arrow.png";
 import right_arrow from "../../assets/DatePicker/right_arrow.png";
 import double_left from "../../assets/DatePicker/double_left.png";
 import double_right from "../../assets/DatePicker/double_right.png";
-import { useEffect } from "react";
 import { motion } from "framer-motion";
+import { monthLabel } from "./constants";
+import { dateGenerator } from "../../utils/dateGenerator";
+import { useEffect } from "react";
 
 const dateVariant = {
 	initial: {
@@ -76,38 +78,18 @@ const DateDisplayRender = ({
 };
 
 const DatePicker = ({
-	handleShowDatePicker,
+	handleCancelDatePicker,
+	handleApplyDatePicker,
 	dateDisplay,
 	SetDateDisplay,
 	dateActive,
 	SetDateActive,
+	today,
 }) => {
-	const monthLabel = [
-		"January",
-		"February",
-		"March",
-		"April",
-		"May",
-		"June",
-		"July",
-		"August",
-		"September",
-		"October",
-		"November",
-		"December",
-	];
-
 	const PREV_MONTH = "PREV_MONTH";
 	const NEXT_MONTH = "NEXT_MONTH";
 	const PREV_YEAR = "PREV_YEAR";
 	const NEXT_YEAR = "NEXT_YEAR";
-
-	const today = {
-		day: new Date().getDate(),
-		month: new Date().getMonth(),
-		monthLabel: monthLabel[new Date().getMonth()],
-		year: new Date().getFullYear(),
-	};
 
 	const isToday = (date) => {
 		return (
@@ -144,88 +126,28 @@ const DatePicker = ({
 			return "date-picker-date-article";
 		} else {
 			let base_name = "date-picker-date-unit";
+			try {
+				if (isNotTickedDate(date)) return base_name + " not-tick";
+				if (isTickedDate(date)) return base_name + " ticked";
+				if (isToday(date)) return base_name + " today";
+				if (isCanTickedDate(date)) return base_name + " can-ticked";
 
-			if (isNotTickedDate(date)) return base_name + " not-tick";
-			if (isTickedDate(date)) return base_name + " ticked";
-			if (isToday(date)) return base_name + " today";
-			if (isCanTickedDate(date)) return base_name + " can-ticked";
-
-			return base_name;
+				return base_name;
+			} catch (error) {
+				return base_name;
+			}
 		}
-	};
-
-	const getLastMonthDate = (year, month) => {
-		return new Date(year, month, 0);
-	};
-
-	const getDayOfWeek = (year, month) => {
-		let dateOfWeek = new Date(year, month, 1).getDay();
-		if (dateOfWeek === 0) return 6;
-		return dateOfWeek - 1;
 	};
 
 	const handleClickDate = (date) => {
 		SetDateActive(date);
 	};
 
-	const dateGenerator = (date) => {
-		let date_array = [["Mo"], ["Tu"], ["We"], ["Th"], ["Fr"], ["Sa"], ["Su"]];
-
-		const dateBegin = getDayOfWeek(date.year, date.month);
-		const prevMonth = getLastMonthDate(date.year, date.month);
-		const currentMonth = getLastMonthDate(date.year, date.month + 1);
-
-		let date_render = {
-			day: prevMonth.getDate() - dateBegin + 1,
-			month: prevMonth.getMonth(),
-			year: prevMonth.getFullYear(),
-		};
-
-		if (date_render.day === 32) {
-			date_render.day = 1;
-			date_render.month = date.month;
-			date_render.year = date.year;
-		}
-
-		const isInTheLastMonth = (month) => {
-			return (
-				date_render.month === month.getMonth() &&
-				date_render.day >= month.getDate()
-			);
-		};
-
-		const nextMonth = () => {
-			date_render.day = 1;
-			if (date_render.month !== 11) {
-				date_render.month += 1;
-			} else {
-				date_render.month = 0;
-				date_render.year += 1;
-			}
-		};
-
-		for (let row = 0; row < 6; row++) {
-			for (let week_day = 0; week_day < 7; week_day++) {
-				date_array[week_day].push({ ...date_render });
-
-				if (isInTheLastMonth(prevMonth) || isInTheLastMonth(currentMonth)) {
-					nextMonth(date_render);
-				} else date_render.day += 1;
-			}
-		}
-
-		SetDateDisplay({
-			...dateDisplay,
-			month: date.month,
-			year: date.year,
-			date_array,
-		});
-	};
-
 	const handleChangeDateDisplay = (type) => {
+		let new_day;
 		switch (type) {
 			case PREV_MONTH:
-				dateGenerator({
+				new_day = dateGenerator({
 					month: dateDisplay.month - 1 >= 0 ? dateDisplay.month - 1 : 11,
 					year:
 						dateDisplay.month - 1 >= 0
@@ -234,7 +156,7 @@ const DatePicker = ({
 				});
 				break;
 			case NEXT_MONTH:
-				dateGenerator({
+				new_day = dateGenerator({
 					month: dateDisplay.month + 1 <= 11 ? dateDisplay.month + 1 : 0,
 					year:
 						dateDisplay.month + 1 <= 11
@@ -243,13 +165,13 @@ const DatePicker = ({
 				});
 				break;
 			case PREV_YEAR:
-				dateGenerator({
+				new_day = dateGenerator({
 					month: dateDisplay.month,
 					year: dateDisplay.year - 1,
 				});
 				break;
 			case NEXT_YEAR:
-				dateGenerator({
+				new_day = dateGenerator({
 					month: dateDisplay.month,
 					year: dateDisplay.year + 1,
 				});
@@ -257,16 +179,9 @@ const DatePicker = ({
 			default:
 				break;
 		}
-	};
 
-	useEffect(() => {
-		if (dateActive === null) {
-			dateGenerator(today);
-			SetDateActive(today);
-		} else {
-			dateGenerator(dateActive);
-		}
-	}, []);
+		SetDateDisplay(new_day);
+	};
 
 	return (
 		<motion.div
@@ -317,7 +232,7 @@ const DatePicker = ({
 					variants={buttonVariants}
 					whileHover="apply"
 					transition="transition"
-					onClick={handleShowDatePicker}
+					onClick={handleCancelDatePicker}
 				>
 					Cancel
 				</motion.button>
@@ -325,6 +240,7 @@ const DatePicker = ({
 					variants={buttonVariants}
 					whileHover="apply"
 					transition="transition"
+					onClick={handleApplyDatePicker}
 				>
 					Apply
 				</motion.button>

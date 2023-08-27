@@ -4,7 +4,9 @@ import folder from "../../assets/Task/folder.png";
 import calendar from "../../assets/Task/calendar.png";
 import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "../Layouts/DatePicker";
+import { dateGenerator } from "../../utils/dateGenerator";
 import { useState } from "react";
+import { monthLabel } from "../Layouts/constants";
 
 const taskVariants = {
 	enter: {
@@ -47,11 +49,41 @@ export const TaskCreate = ({
 		date_array: [],
 	});
 	const [dateActive, SetDateActive] = useState(null);
+	const [dateHistory, SetDateHistory] = useState(null);
+
+	const today = {
+		day: new Date().getDate(),
+		month: new Date().getMonth(),
+		monthLabel: monthLabel[new Date().getMonth()],
+		year: new Date().getFullYear(),
+	};
 
 	const [taskName, SetTaskName] = useState("");
 
+	const handleCancelDatePicker = () => {
+		SetShowDatePicker(false);
+
+		if (dateHistory) SetDateActive({ ...dateHistory });
+		else SetDateActive(null);
+	};
+
+	const handleApplyDatePicker = () => {
+		SetShowDatePicker(false);
+		SetDateHistory({ ...dateActive });
+	};
+
 	const handleShowDatePicker = () => {
-		SetShowDatePicker((prev) => !prev);
+		if (showDatePicker) {
+			handleCancelDatePicker();
+		} else {
+			let display_temp;
+			if (dateActive === null) {
+				SetDateActive({ ...today });
+				display_temp = dateGenerator(today);
+			} else display_temp = dateGenerator(dateActive);
+			SetDateDisplay(display_temp);
+			SetShowDatePicker(true);
+		}
 	};
 
 	const handleCloseBox = () => {
@@ -72,6 +104,15 @@ export const TaskCreate = ({
 
 		await addNewTask(new_task, inCollection._id);
 		handleCloseBox();
+	};
+
+	const renderDate = () => {
+		try {
+			if (dateActive === null) return "Date";
+			return `${dateActive.day} - ${dateActive.month + 1} - ${dateActive.year}`;
+		} catch (error) {
+			return "Date";
+		}
 	};
 
 	return (
@@ -115,13 +156,7 @@ export const TaskCreate = ({
 						onClick={handleShowDatePicker}
 					>
 						<img src={calendar} alt="" />
-						<p>
-							{dateActive === null
-								? "Date"
-								: `${dateActive.day} - ${dateActive.month + 1} - ${
-										dateActive.year
-								  }`}
-						</p>
+						<p>{renderDate()}</p>
 					</motion.div>
 				</div>
 				<div className="task-create-bottom">
@@ -136,11 +171,13 @@ export const TaskCreate = ({
 			<AnimatePresence>
 				{showDatePicker && (
 					<DatePicker
-						handleShowDatePicker={handleShowDatePicker}
+						handleCancelDatePicker={handleCancelDatePicker}
+						handleApplyDatePicker={handleApplyDatePicker}
 						dateDisplay={dateDisplay}
 						SetDateDisplay={SetDateDisplay}
 						dateActive={dateActive}
 						SetDateActive={SetDateActive}
+						today={today}
 					></DatePicker>
 				)}
 			</AnimatePresence>
