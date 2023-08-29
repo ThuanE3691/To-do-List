@@ -118,6 +118,7 @@ router.delete("/:id", verifyToken, async (req, res) => {
 		const collection = await Collection.findOne(collectionFindCondition);
 		if (collection) {
 			let total_task = collection.list_tasks.length;
+			let tasks_backup = [...collection.list_tasks];
 
 			const taskDeletePromises = [];
 
@@ -145,13 +146,14 @@ router.delete("/:id", verifyToken, async (req, res) => {
 
 				const deletedTaskCount = successfullyDeletedTasks.length;
 
-				collection.list_tasks = unsuccessDeleteTasks;
+				if (unsuccessDeleteTasks.length > 0) collection.list_tasks = [];
+				else collection.list_tasks = tasks_backup;
 				await collection.save();
 
 				if (unsuccessDeleteTasks.length > 0) {
 					return res.json({
 						success: false,
-						message: `Just deleted ${deletedTaskCount} tasks successfully, ${unsuccessDeleteTasks.length} tasks is not found`,
+						message: `Cannot remove all tasks because not found ${unsuccessDeleteTasks.length} tasks in database.`,
 						collection: collection,
 					});
 				} else {

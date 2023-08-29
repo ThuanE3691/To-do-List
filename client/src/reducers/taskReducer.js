@@ -3,6 +3,7 @@ import {
 	TASKS_UNMOUNT,
 	TASK_UPDATE_SUCCESS,
 	TASK_ADDED_SUCCESS,
+	REMOVE_ALL_TASK_SUCCESS,
 } from "../contexts/constans";
 
 function update_tasks(tasks, task_update) {
@@ -47,6 +48,14 @@ export const taskReducer = (state, action) => {
 				inCollection: {
 					...state.inCollection,
 					list_tasks: [...state.inCollection.list_tasks, payload],
+				},
+			};
+		case REMOVE_ALL_TASK_SUCCESS:
+			return {
+				...state,
+				inCollection: {
+					...state.inCollection,
+					list_tasks: [],
 				},
 			};
 		default:

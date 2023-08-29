@@ -14,11 +14,62 @@
     pointer-events: visible;
     z-index: 0;
     font-weight: 500;
+    overflow-y: hidden;
 }
 
 .task-header{
     display: flex;
     align-items: center;
+    justify-content: space-between;
+}
+
+.task-header-left{
+    display: flex;
+    align-items: center;
+}
+
+.task-header-right img{
+    width: 24px;
+    height: 24px;
+    filter: invert(100%) sepia(62%) saturate(0%) hue-rotate(232deg) brightness(116%) contrast(100%);
+    cursor: pointer;
+}
+
+.tasks-option{
+    position: absolute;
+    overflow: hidden;
+    right: 18%;
+    top: 11%;
+    z-index: 1;
+    font-family: 'Inter';
+    color: white;
+    background-color: #21212B;
+    border-radius: 4px;
+    font-weight: 500;
+    width: 180px;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.tasks-option li:first-of-type{
+    width: 100%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.308);
+}
+
+.tasks-option li{
+    display: flex;
+    cursor: pointer;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.tasks-option li:hover{
+    opacity: 0.6;
+}
+
+.tasks-option li p{
+    padding: 10px;
 }
 
 .task-title{

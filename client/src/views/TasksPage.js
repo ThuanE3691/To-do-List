@@ -1,10 +1,11 @@
 import "../css/collection.css";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { COLLECTION_VIEW } from "../contexts/constans";
 import "../css/tasksPage.css";
 import back from "../assets/Other/back.png";
 import add from "../assets/Other/add.png";
+import dots from "../assets/Other/dots.png";
 import { useNavigate } from "react-router-dom";
 import Task from "../components/Tasks/Task";
 import { TaskContext } from "../contexts/TaskContext";
@@ -67,6 +68,7 @@ const TasksContainer = ({
 	onClickBackToCollection,
 	updateTask,
 	handleOpenTaskAdd,
+	handleShowTaskOption,
 }) => {
 	return (
 		<motion.div
@@ -76,16 +78,26 @@ const TasksContainer = ({
 			key="task-display"
 		>
 			<div className="task-header">
+				<div className="task-header-left">
+					<motion.div
+						className="task-back"
+						whileHover={{ opacity: 0.6 }}
+						transition={{ duration: 0.2 }}
+						onClick={onClickBackToCollection}
+					>
+						<img src={back} alt="" />
+					</motion.div>
+
+					<div className="task-title">{inCollection.name}</div>
+				</div>
 				<motion.div
-					className="task-back"
+					className="task-header-right"
 					whileHover={{ opacity: 0.6 }}
 					transition={{ duration: 0.2 }}
-					onClick={onClickBackToCollection}
+					onClick={handleShowTaskOption}
 				>
-					<img src={back} alt="" />
+					<img src={dots} alt="" />
 				</motion.div>
-
-				<div className="task-title">{inCollection.name}</div>
 			</div>
 			<motion.div
 				className="add-task-area"
@@ -143,9 +155,12 @@ const TasksPage = () => {
 		showAddTask,
 		SetShowAddTask,
 		addNewTask,
+		removeAllTasks,
 	} = useContext(TaskContext);
 
 	const navigate = useNavigate();
+
+	const [showTaskOption, SetShowTaskOption] = useState(false);
 
 	const onClickBackToCollection = () => {
 		navigate("/collections");
@@ -158,6 +173,15 @@ const TasksPage = () => {
 
 	const handleCloseTaskAdd = () => {
 		SetShowAddTask(false);
+	};
+
+	const handleShowTaskOption = () => {
+		SetShowTaskOption((prev) => !prev);
+	};
+
+	const handleOnClickTaskOption = () => {
+		removeAllTasks();
+		SetShowTaskOption(false);
 	};
 
 	useEffect(() => {
@@ -189,6 +213,7 @@ const TasksPage = () => {
 								onClickBackToCollection={onClickBackToCollection}
 								updateTask={updateTask}
 								handleOpenTaskAdd={handleOpenTaskAdd}
+								handleShowTaskOption={handleShowTaskOption}
 							></TasksContainer>
 						</>
 					)}
@@ -201,6 +226,23 @@ const TasksPage = () => {
 						handleCloseTaskAdd={handleCloseTaskAdd}
 						addNewTask={addNewTask}
 					></TaskCreate>
+				)}
+			</AnimatePresence>
+			<AnimatePresence>
+				{showTaskOption && (
+					<motion.ul
+						className="tasks-option"
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+					>
+						<li>
+							<p>Remove task</p>
+						</li>
+						<li onClick={handleOnClickTaskOption}>
+							<p>Remove all tasks</p>
+						</li>
+					</motion.ul>
 				)}
 			</AnimatePresence>
 		</>

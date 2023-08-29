@@ -5,6 +5,7 @@ import {
 	COLLECTION_LOADED_SUCCESS,
 	TASKS_UNMOUNT,
 	TASK_ADDED_SUCCESS,
+	REMOVE_ALL_TASK_SUCCESS,
 } from "./constans";
 import axios from "axios";
 import { taskReducer } from "../reducers/taskReducer";
@@ -24,6 +25,15 @@ function tasks_claffication(tasks) {
 		tasksNotFinish,
 		tasksFinish,
 	};
+}
+
+function handleErrorCase(error) {
+	return error.response.data
+		? error.response.data
+		: {
+				success: false,
+				message: "Server error",
+		  };
 }
 
 const TaskContextProvider = ({ children }) => {
@@ -57,12 +67,7 @@ const TaskContextProvider = ({ children }) => {
 				SetNotFinishTasks(tasksNotFinish);
 			}
 		} catch (error) {
-			return error.response.data
-				? error.response.data
-				: {
-						success: false,
-						message: "Server error",
-				  };
+			return handleErrorCase(error);
 		}
 	};
 
@@ -82,12 +87,7 @@ const TaskContextProvider = ({ children }) => {
 				SetNotFinishTasks([...notFinishTasks, response.data.task]);
 			}
 		} catch (error) {
-			return error.response.data
-				? error.response.data
-				: {
-						success: false,
-						message: "Server error",
-				  };
+			return handleErrorCase(error);
 		}
 	};
 
@@ -134,12 +134,33 @@ const TaskContextProvider = ({ children }) => {
 				SetFinishTasks(new_finish_tasks);
 			}
 		} catch (error) {
-			return error.response.data
-				? error.response.data
-				: {
-						success: false,
-						message: "Server error",
-				  };
+			return handleErrorCase(error);
+		}
+	};
+
+	const removeAllTasks = async () => {
+		const collection_id = taskState.inCollection._id;
+
+		try {
+			const response = await axios.delete(
+				`${API_URL}/collections/${collection_id}`
+			);
+
+			if (response.data.success) {
+				dispatch({
+					type: REMOVE_ALL_TASK_SUCCESS,
+				});
+
+				SetFinishTasks([]);
+				SetNotFinishTasks([]);
+			} else {
+				return {
+					success: false,
+					message: response.data.message,
+				};
+			}
+		} catch (error) {
+			return handleErrorCase(error);
 		}
 	};
 
@@ -153,6 +174,7 @@ const TaskContextProvider = ({ children }) => {
 		showAddTask,
 		SetShowAddTask,
 		addNewTask,
+		removeAllTasks,
 	};
 
 	return (
