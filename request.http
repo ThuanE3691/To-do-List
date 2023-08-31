@@ -45,19 +45,19 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 ########################################################
 /// Add task to COLLECTION
-POST http://localhost:5000/api/collections/64cbd86699f76b706e823139/tasks
+POST http://localhost:5000/api/collections/64e624bf90f6b52758f0a8d5/tasks
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI5NjY0fQ.4v1by5XWJ5tpICXgb7xlWI28N2uLPJsgo10qZ6GkJdA
 
 {
-    "name": "Clean house",
+    "name": "TEST 2",
     "note": "",
     "check": true
 }
 
 ########################################################
 /// GET One Collections
-GET http://localhost:5000/api/collections/64e6251990f6b52758f0a8e2
+GET http://localhost:5000/api/collections/64e624bf90f6b52758f0a8d5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc
 
 
@@ -78,6 +78,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2Z
 
 
 ########################################################
-/// Delete Collection
-DELETE http://localhost:5000/api/collections/64eaf2cbdce06c13609bf7c4
+/// Delete all tasks in one collection
+DELETE http://localhost:5000/api/collections/64e624bf90f6b52758f0a8d5
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiNjQ2ZjcwOTcxOTdlMjc5ODQ2YTgwZGU3IiwiaWF0IjoxNjg1MDI0OTIyfQ.80a2A-m9fTgHRge3N5AHCnmHa_SrOSqo_pUyV6HNKYc

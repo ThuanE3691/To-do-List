@@ -4,9 +4,12 @@ import { generateFilter } from "../../utils/filterGenerator.js";
 import { motion } from "framer-motion";
 
 const Task = ({ name, check, colorDisplay, deadline }) => {
-	const deadlineDate = `${deadline.getDate()} - ${
-		deadline.getMonth() + 1
-	} - ${deadline.getFullYear()}`;
+	const deadlineDate =
+		deadline.toString() !== "Invalid Date"
+			? `${deadline.getDate()} - ${
+					deadline.getMonth() + 1
+			  } - ${deadline.getFullYear()}`
+			: null;
 	return (
 		<motion.div
 			className="task-container"
@@ -52,16 +55,18 @@ const Task = ({ name, check, colorDisplay, deadline }) => {
 			</div>
 			<div className="task-bottom">
 				<div className="task-sub-tasks"></div>
-				<div className="task-deadline">
-					<img
-						src={calendar}
-						alt=""
-						style={{
-							filter: generateFilter(colorDisplay),
-						}}
-					/>
-					<p style={{ color: colorDisplay }}>{deadlineDate}</p>
-				</div>
+				{deadlineDate && (
+					<div className="task-deadline">
+						<img
+							src={calendar}
+							alt=""
+							style={{
+								filter: generateFilter(colorDisplay),
+							}}
+						/>
+						<p style={{ color: colorDisplay }}>{deadlineDate}</p>
+					</div>
+				)}
 			</div>
 		</motion.div>
 	);

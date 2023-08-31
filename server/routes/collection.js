@@ -7,7 +7,14 @@ const verifyToken = require("../middleware/auth.js");
 const { verify } = require("jsonwebtoken");
 
 /// GET COLLECTION
-const COLLECTION_URL = "http://localhost:5000/api/collections";
+
+const handleErrorCase = (res, error) => {
+	res.status(400).json({
+		success: false,
+		message: "Internal Server",
+		error: error.message,
+	});
+};
 
 router.get("/", verifyToken, async (req, res) => {
 	try {
@@ -22,11 +29,7 @@ router.get("/", verifyToken, async (req, res) => {
 			});
 		}
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: "Internal Server",
-			error: error.message,
-		});
+		handleErrorCase(res, error);
 	}
 });
 
@@ -67,11 +70,7 @@ router.post("/", verifyToken, async (req, res) => {
 			new_collection: collection,
 		});
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: "Internal Server",
-			error: error.message,
-		});
+		handleErrorCase(res, error);
 	}
 });
 
@@ -99,11 +98,7 @@ router.get("/:id", verifyToken, async (req, res) => {
 			});
 		}
 	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: "Internal Server",
-			error: error.message,
-		});
+		handleErrorCase(res, error);
 	}
 });
 
@@ -116,70 +111,28 @@ router.delete("/:id", verifyToken, async (req, res) => {
 			user: req.user_id,
 		};
 		const collection = await Collection.findOne(collectionFindCondition);
-		if (collection) {
-			let total_task = collection.list_tasks.length;
-			let tasks_backup = [...collection.list_tasks];
 
-			const taskDeletePromises = [];
-
-			for (const task_id of collection.list_tasks) {
-				const taskDeleteCondition = {
-					_id: task_id,
-					user: req.user_id,
-					in_collection: req.params.id,
-				};
-
-				const taskDeletePromise = Task.findOneAndDelete(taskDeleteCondition);
-				taskDeletePromises.push(taskDeletePromise);
-			}
-
-			try {
-				const deletedTasks = await Promise.all(taskDeletePromises);
-
-				const successfullyDeletedTasks = deletedTasks.filter(
-					(task) => task !== null
-				);
-
-				const unsuccessDeleteTasks = deletedTasks.filter(
-					(task) => task === null
-				);
-
-				const deletedTaskCount = successfullyDeletedTasks.length;
-
-				if (unsuccessDeleteTasks.length > 0) collection.list_tasks = [];
-				else collection.list_tasks = tasks_backup;
-				await collection.save();
-
-				if (unsuccessDeleteTasks.length > 0) {
-					return res.json({
-						success: false,
-						message: `Cannot remove all tasks because not found ${unsuccessDeleteTasks.length} tasks in database.`,
-						collection: collection,
-					});
-				} else {
-					return res.json({
-						success: true,
-						message: `Successfully deleted ${deletedTaskCount} out of ${total_task} tasks`,
-						collection: collection,
-					});
-				}
-			} catch (error) {
-				return res
-					.status(500)
-					.json({ error: "An error occurred while deleting tasks" });
-			}
-		} else {
+		if (!collection) {
 			return res.status(404).json({
 				success: false,
 				message: "Collection Not Found",
 			});
 		}
-	} catch (error) {
-		res.status(400).json({
-			success: false,
-			message: "Internal Server",
-			error: error.message,
+
+		const taskDelete = await Task.deleteMany({ _id: collection.list_tasks });
+		const collectionUpdate = await collection.updateOne({
+			$set: { list_tasks: [] },
 		});
+
+		if (taskDelete && collectionUpdate) {
+			return res.status(200).json({
+				success: true,
+				message: "Remove all tasks successfully",
+				collection: collection,
+			});
+		}
+	} catch (error) {
+		handleErrorCase(res, error);
 	}
 });
 
