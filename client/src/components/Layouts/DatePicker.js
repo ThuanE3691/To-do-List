@@ -6,13 +6,12 @@ import double_right from "../../assets/DatePicker/double_right.png";
 import { motion } from "framer-motion";
 import { monthLabel } from "./constants";
 import { dateGenerator } from "../../utils/dateGenerator";
-import { useEffect } from "react";
 
 const dateVariant = {
 	initial: {
 		opacity: 0,
 	},
-	not_inital: {
+	not_initial: {
 		opacity: 1,
 	},
 	animate: {

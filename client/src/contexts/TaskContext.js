@@ -6,13 +6,13 @@ import {
 	TASKS_UNMOUNT,
 	TASK_ADDED_SUCCESS,
 	REMOVE_ALL_TASK_SUCCESS,
-} from "./constans";
+} from "./constants";
 import axios from "axios";
 import { taskReducer } from "../reducers/taskReducer";
 
 export const TaskContext = createContext();
 
-function tasks_claffication(tasks) {
+function tasks_classification(tasks) {
 	const tasksNotFinish = tasks
 		.filter((item) => item.check === false)
 		.sort((a, b) => new Date(a.create_at) - new Date(b.create_at));
@@ -59,7 +59,7 @@ const TaskContextProvider = ({ children }) => {
 					payload: response.data.collection,
 				});
 
-				const { tasksNotFinish, tasksFinish } = tasks_claffication(
+				const { tasksNotFinish, tasksFinish } = tasks_classification(
 					response.data.collection.list_tasks
 				);
 

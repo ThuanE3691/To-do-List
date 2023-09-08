@@ -28,6 +28,13 @@
     align-items: center;
 }
 
+.task-header-right{
+    gap: 20px;
+    display: flex;
+    align-items: center;
+    cursor:pointer;
+}
+
 .task-header-right img{
     width: 24px;
     height: 24px;
@@ -123,7 +130,7 @@
     height: 12px;
 }
 
-.uncomplete-task{
+.incomplete-task{
     overflow: hidden;
 }
 

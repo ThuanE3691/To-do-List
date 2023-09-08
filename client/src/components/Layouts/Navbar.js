@@ -7,14 +7,14 @@ const Navbar = () => {
 	return (
 		<nav className="nav">
 			<div className="nav-left">
-				<div className="nav-item">
+				<Link to="/Dashboard" className="nav-item">
 					<i className="nav-icon bx bxs-dashboard bx-sm"></i>
-					<Link to="/Dashboard">Dashboard</Link>
-				</div>
-				<div className="nav-item nav-active">
+					<p>Dashboard</p>
+				</Link>
+				<Link to="/collections" className="nav-item nav-active">
 					<i className="nav-icon bx bx-spreadsheet bx-sm"></i>
-					<Link to="/collections">Collections</Link>
-				</div>
+					<p>Collections</p>
+				</Link>
 			</div>
 			<div className="nav-right">
 				<FontAwesomeIcon icon={faPlus} className="nav-icon nav-add" size="sm" />

@@ -3,7 +3,7 @@ import {
 	API_URL,
 	COLLECTIONS_ADD_SUCCESS,
 	COLLECTIONS_LOADED_SUCCESS,
-} from "./constans";
+} from "./constants";
 import axios from "axios";
 import { CollectionReducer } from "../reducers/collectionReducer";
 

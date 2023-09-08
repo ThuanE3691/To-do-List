@@ -1,7 +1,7 @@
 import {
 	COLLECTIONS_LOADED_SUCCESS,
 	COLLECTIONS_ADD_SUCCESS,
-} from "../contexts/constans";
+} from "../contexts/constants";
 
 export const CollectionReducer = (state, action) => {
 	const { type, payload } = action;

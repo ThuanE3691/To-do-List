@@ -1,25 +1,29 @@
 import "../css/collection.css";
 import { useContext, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { COLLECTION_VIEW } from "../contexts/constans";
+import {
+	COLLECTION_VIEW,
+	REMOVE_TYPE_ALL,
+	REMOVE_TYPE_CHOOSE,
+} from "../contexts/constants";
 import "../css/tasksPage.css";
 import back from "../assets/Other/back.png";
 import add from "../assets/Other/add.png";
-import dots from "../assets/Other/dots.png";
+import deleteOne from "../assets/Other/delete.png";
+import deleteAll from "../assets/Other/delete-all.png";
 import { useNavigate } from "react-router-dom";
 import Task from "../components/Tasks/Task";
 import { TaskContext } from "../contexts/TaskContext";
 import { TaskCreate } from "../components/Tasks/TaskCreate";
 
-const DisplayTask = ({
-	finishTasks,
-	notFinishTasks,
-	updateTask,
-	colorDisplay,
-}) => {
+const DisplayTask = ({ colorDisplay, removeMode }) => {
+	const { finishTasks, notFinishTasks, updateTask } = useContext(TaskContext);
+
 	const handleToggleCheck = async (task, taskIndex) => {
-		const new_task = { ...task, check: !task.check };
-		await updateTask(new_task, taskIndex);
+		if (!removeMode.active) {
+			const new_task = { ...task, check: !task.check };
+			await updateTask(new_task, taskIndex);
+		}
 	};
 
 	const renderTask = (task, index) => {
@@ -38,14 +42,20 @@ const DisplayTask = ({
 					check={task.check}
 					colorDisplay={colorDisplay}
 					deadline={new Date(task.deadline)}
+					removeMode={removeMode}
 				></Task>
 			</motion.div>
 		);
 	};
 
 	return (
-		<div>
-			<div className="uncomplete-task" key="uncomplete">
+		<motion.div
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 1 }}
+			exit={{ opacity: 0 }}
+			key="display-render"
+		>
+			<div className="incomplete-task" key="incomplete">
 				<p>Tasks - {notFinishTasks.length}</p>
 				<AnimatePresence mode="popLayout">
 					{notFinishTasks.map(renderTask)}
@@ -57,19 +67,27 @@ const DisplayTask = ({
 					{finishTasks.map(renderTask)}
 				</AnimatePresence>
 			</div>
-		</div>
+		</motion.div>
 	);
 };
 
 const TasksContainer = ({
 	inCollection,
-	notFinishTasks,
-	finishTasks,
-	onClickBackToCollection,
-	updateTask,
-	handleOpenTaskAdd,
-	handleShowTaskOption,
+	removeMode,
+	handleOnClickTaskOption,
 }) => {
+	const { SetShowAddTask } = useContext(TaskContext);
+
+	const navigate = useNavigate();
+
+	const onClickBackToCollection = () => {
+		navigate("/collections");
+	};
+
+	const handleOpenTaskAdd = () => {
+		SetShowAddTask(true);
+	};
+
 	return (
 		<motion.div
 			initial={{ opacity: 0 }}
@@ -90,14 +108,22 @@ const TasksContainer = ({
 
 					<div className="task-title">{inCollection.name}</div>
 				</div>
-				<motion.div
-					className="task-header-right"
-					whileHover={{ opacity: 0.6 }}
-					transition={{ duration: 0.2 }}
-					onClick={handleShowTaskOption}
-				>
-					<img src={dots} alt="" />
-				</motion.div>
+				<div className="task-header-right">
+					<motion.img
+						src={deleteOne}
+						alt=""
+						whileHover={{ opacity: 0.6 }}
+						transition={{ duration: 0.2 }}
+						onClick={() => handleOnClickTaskOption(REMOVE_TYPE_CHOOSE)}
+					/>
+					<motion.img
+						src={deleteAll}
+						alt=""
+						whileHover={{ opacity: 0.6 }}
+						transition={{ duration: 0.2 }}
+						onClick={() => handleOnClickTaskOption(REMOVE_TYPE_ALL)}
+					/>
+				</div>
 			</div>
 			<motion.div
 				className="add-task-area"
@@ -114,12 +140,12 @@ const TasksContainer = ({
 				<p>Add a task</p>
 			</motion.div>
 			<div className="task-display-area">
-				<DisplayTask
-					updateTask={updateTask}
-					finishTasks={finishTasks}
-					notFinishTasks={notFinishTasks}
-					colorDisplay={inCollection.color}
-				></DisplayTask>
+				<AnimatePresence>
+					<DisplayTask
+						colorDisplay={inCollection.color}
+						removeMode={removeMode}
+					></DisplayTask>
+				</AnimatePresence>
 			</div>
 		</motion.div>
 	);
@@ -144,44 +170,31 @@ const pageVariants = {
 		opacity: 0,
 	},
 };
+
 const TasksPage = () => {
 	const {
 		taskState: { inCollection, tasksLoading },
-		finishTasks,
-		notFinishTasks,
 		getTaskFromCollection,
-		unMountTasks,
-		updateTask,
 		showAddTask,
-		SetShowAddTask,
-		addNewTask,
 		removeAllTasks,
 	} = useContext(TaskContext);
 
-	const navigate = useNavigate();
+	const [removeMode, SetRemoveMode] = useState({
+		active: false,
+		list_remove: [],
+	});
 
-	const [showTaskOption, SetShowTaskOption] = useState(false);
-
-	const onClickBackToCollection = () => {
-		navigate("/collections");
-		unMountTasks();
-	};
-
-	const handleOpenTaskAdd = () => {
-		SetShowAddTask(true);
-	};
-
-	const handleCloseTaskAdd = () => {
-		SetShowAddTask(false);
-	};
-
-	const handleShowTaskOption = () => {
-		SetShowTaskOption((prev) => !prev);
-	};
-
-	const handleOnClickTaskOption = () => {
-		removeAllTasks();
-		SetShowTaskOption(false);
+	const handleOnClickTaskOption = (type) => {
+		switch (type) {
+			case REMOVE_TYPE_CHOOSE:
+				SetRemoveMode({ ...removeMode, active: !removeMode.active });
+				break;
+			case REMOVE_TYPE_ALL:
+				removeAllTasks();
+				break;
+			default:
+				break;
+		}
 	};
 
 	useEffect(() => {
@@ -198,52 +211,21 @@ const TasksPage = () => {
 				initial="enter"
 				animate={showAddTask ? "showTaskCreate" : "normal"}
 				exit="exit"
-				transition={{
-					type: "tween",
-					duration: 0.5,
-				}}
 			>
 				<AnimatePresence>
 					{!tasksLoading && (
 						<>
 							<TasksContainer
 								inCollection={inCollection}
-								notFinishTasks={notFinishTasks}
-								finishTasks={finishTasks}
-								onClickBackToCollection={onClickBackToCollection}
-								updateTask={updateTask}
-								handleOpenTaskAdd={handleOpenTaskAdd}
-								handleShowTaskOption={handleShowTaskOption}
+								removeMode={removeMode}
+								handleOnClickTaskOption={handleOnClickTaskOption}
 							></TasksContainer>
 						</>
 					)}
 				</AnimatePresence>
 			</motion.div>
 			<AnimatePresence>
-				{showAddTask && (
-					<TaskCreate
-						inCollection={inCollection}
-						handleCloseTaskAdd={handleCloseTaskAdd}
-						addNewTask={addNewTask}
-					></TaskCreate>
-				)}
-			</AnimatePresence>
-			<AnimatePresence>
-				{showTaskOption && (
-					<motion.ul
-						className="tasks-option"
-						initial={{ opacity: 0 }}
-						animate={{ opacity: 1 }}
-						exit={{ opacity: 0 }}
-					>
-						<li>
-							<p>Remove task</p>
-						</li>
-						<li onClick={handleOnClickTaskOption}>
-							<p>Remove all tasks</p>
-						</li>
-					</motion.ul>
-				)}
+				{showAddTask && <TaskCreate inCollection={inCollection}></TaskCreate>}
 			</AnimatePresence>
 		</>
 	);

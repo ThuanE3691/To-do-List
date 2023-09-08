@@ -106,7 +106,7 @@ router.delete("/:task_id", verifyToken, async (req, res) => {
 			in_collection: req.params.id,
 		};
 
-		const CollectiondeletedTask = await Collection.findOneAndUpdate(
+		const CollectionDeletedTask = await Collection.findOneAndUpdate(
 			collectionDeleteTaskCondition,
 			{
 				$pull: {
@@ -116,7 +116,7 @@ router.delete("/:task_id", verifyToken, async (req, res) => {
 			}
 		);
 
-		if (!CollectiondeletedTask) {
+		if (!CollectionDeletedTask) {
 			return res.status(400).json({
 				success: false,
 				message: "Don't found task in collection to delete",

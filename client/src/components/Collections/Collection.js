@@ -24,7 +24,6 @@ const Collection = ({ name, image, color, tasks, index }) => {
 		work: work,
 		user: user,
 	};
-
 	let tasks_complete = tasks.reduce((acc, task) => {
 		return acc + (task.check === true ? 1 : 0);
 	}, 0);

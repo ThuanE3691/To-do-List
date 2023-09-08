@@ -19,13 +19,13 @@
 
 .nav-item{
     margin-right: 50px;
-    font-family: 'Nunito';
+    font-family: 'Inter';
+    font-weight: 500;
     color: white;
     display: flex;
     align-items: center;
     opacity: 50%;
     transition: opacity ease-in-out 0.2s;
-    cursor: default
 }
 
 .nav-item.nav-active{

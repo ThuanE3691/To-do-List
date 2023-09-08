@@ -4,7 +4,7 @@ import {
 	TASK_UPDATE_SUCCESS,
 	TASK_ADDED_SUCCESS,
 	REMOVE_ALL_TASK_SUCCESS,
-} from "../contexts/constans";
+} from "../contexts/constants";
 
 function update_tasks(tasks, task_update) {
 	const tasks_after_upgrade = tasks.map((task) => {

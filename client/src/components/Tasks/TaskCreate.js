@@ -5,8 +5,9 @@ import calendar from "../../assets/Task/calendar.png";
 import { motion, AnimatePresence } from "framer-motion";
 import DatePicker from "../Layouts/DatePicker";
 import { dateGenerator } from "../../utils/dateGenerator";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { monthLabel } from "../Layouts/constants";
+import { TaskContext } from "../../contexts/TaskContext";
 
 const taskVariants = {
 	enter: {
@@ -37,11 +38,13 @@ const itemVariants = {
 	},
 };
 
-export const TaskCreate = ({
-	inCollection,
-	handleCloseTaskAdd,
-	addNewTask,
-}) => {
+export const TaskCreate = ({ inCollection }) => {
+	const { SetShowAddTask, addNewTask } = useContext(TaskContext);
+
+	const handleCloseTaskAdd = () => {
+		SetShowAddTask(false);
+	};
+
 	const [showDatePicker, SetShowDatePicker] = useState(false);
 	const [dateDisplay, SetDateDisplay] = useState({
 		year: null,

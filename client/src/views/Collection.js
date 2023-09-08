@@ -3,10 +3,11 @@ import add from "../assets/Other/add.png";
 import Collection from "../components/Collections/Collection.js";
 import CollectionCreate from "../components/Collections/CollectionCreate";
 import { CollectionContext } from "../contexts/CollectionContext";
+import { TaskContext } from "../contexts/TaskContext";
 import { useContext, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { COLLECTION_VIEW } from "../contexts/constans";
+import { COLLECTION_VIEW } from "../contexts/constants";
 
 const CollectionPage = () => {
 	const {
@@ -17,10 +18,13 @@ const CollectionPage = () => {
 		resetCreateCollection,
 	} = useContext(CollectionContext);
 
+	const { unMountTasks } = useContext(TaskContext);
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		getCollections();
+		unMountTasks();
 	}, []);
 
 	const onClickCollection = (e, collection) => {
@@ -75,6 +79,7 @@ const CollectionPage = () => {
 				initial={{ opacity: 0 }}
 				animate={{ opacity: 1 }}
 				exit={{ opacity: 0 }}
+				transition={{ duration: 0.3, easeInOut: "easeInOut" }}
 				key="collection-page"
 			>
 				<div className="collections-head">
@@ -82,7 +87,7 @@ const CollectionPage = () => {
 					<div className="three-dot"></div>
 				</div>
 				<div className="collections-display">
-					<div className="dp fav-dp">Favourites</div>
+					<div className="dp fav-dp">Favorites</div>
 					<div className="dp all-dp active">All Collections</div>
 				</div>
 				<motion.div className="collections-body">
