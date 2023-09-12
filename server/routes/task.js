@@ -145,4 +145,5 @@ router.delete("/:task_id", verifyToken, async (req, res) => {
 		});
 	}
 });
+
 module.exports = router;

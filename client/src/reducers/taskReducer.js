@@ -4,7 +4,10 @@ import {
 	TASK_UPDATE_SUCCESS,
 	TASK_ADDED_SUCCESS,
 	REMOVE_ALL_TASK_SUCCESS,
+	REMOVE_ONE_TASK_SUCCESS,
 } from "../contexts/constants";
+
+import { removeFromList } from "../utils/taskRemove";
 
 function update_tasks(tasks, task_update) {
 	const tasks_after_upgrade = tasks.map((task) => {
@@ -56,6 +59,15 @@ export const taskReducer = (state, action) => {
 				inCollection: {
 					...state.inCollection,
 					list_tasks: [],
+				},
+			};
+		case REMOVE_ONE_TASK_SUCCESS:
+			const new_list = removeFromList(state.inCollection.list_tasks, payload);
+			return {
+				...state,
+				inCollection: {
+					...state.inCollection,
+					list_tasks: new_list,
 				},
 			};
 		default:

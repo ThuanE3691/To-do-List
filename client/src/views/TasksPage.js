@@ -17,21 +17,31 @@ import { TaskContext } from "../contexts/TaskContext";
 import { TaskCreate } from "../components/Tasks/TaskCreate";
 
 const DisplayTask = ({ colorDisplay, removeMode }) => {
-	const { finishTasks, notFinishTasks, updateTask } = useContext(TaskContext);
+	const taskVariants = {
+		initial: { y: -20, scale: 0.6, opacity: 0 },
+		animate: { y: 0, scale: 1, opacity: 1 },
+		exit: { scale: 0.6, opacity: 0 },
+	};
+
+	const { finishTasks, notFinishTasks, updateTask, removeOneTask } =
+		useContext(TaskContext);
 
 	const handleToggleCheck = async (task, taskIndex) => {
 		if (!removeMode.active) {
 			const new_task = { ...task, check: !task.check };
 			await updateTask(new_task, taskIndex);
+		} else {
+			removeOneTask(task);
 		}
 	};
 
 	const renderTask = (task, index) => {
 		return (
 			<motion.div
-				initial={{ y: -20, scale: 0.6, opacity: 0 }}
-				animate={{ y: 0, scale: 1, opacity: 1 }}
-				exit={{ scale: 0.6, opacity: 0 }}
+				variants={taskVariants}
+				initial="initial"
+				animate="animate"
+				exit="exit"
 				onClick={() => handleToggleCheck(task, index)}
 				transition={{ duration: 0.3 }}
 				layout
@@ -115,6 +125,7 @@ const TasksContainer = ({
 						whileHover={{ opacity: 0.6 }}
 						transition={{ duration: 0.2 }}
 						onClick={() => handleOnClickTaskOption(REMOVE_TYPE_CHOOSE)}
+						className={"delete " + (removeMode.active ? "active" : "")}
 					/>
 					<motion.img
 						src={deleteAll}
@@ -181,7 +192,6 @@ const TasksPage = () => {
 
 	const [removeMode, SetRemoveMode] = useState({
 		active: false,
-		list_remove: [],
 	});
 
 	const handleOnClickTaskOption = (type) => {

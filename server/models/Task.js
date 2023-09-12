@@ -16,13 +16,9 @@ const TaskSchema = new Schema({
 	subTasks: {
 		type: Array,
 		items: {
-			name: {
+			content: {
 				type: String,
 				required: true,
-			},
-			note: {
-				type: String,
-				default: "",
 			},
 			check: {
 				type: Boolean,

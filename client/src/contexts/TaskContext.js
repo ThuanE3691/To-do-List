@@ -6,9 +6,11 @@ import {
 	TASKS_UNMOUNT,
 	TASK_ADDED_SUCCESS,
 	REMOVE_ALL_TASK_SUCCESS,
+	REMOVE_ONE_TASK_SUCCESS,
 } from "./constants";
 import axios from "axios";
 import { taskReducer } from "../reducers/taskReducer";
+import { removeFromList } from "../utils/taskRemove";
 
 export const TaskContext = createContext();
 
@@ -27,8 +29,13 @@ function tasks_classification(tasks) {
 	};
 }
 
-function handleErrorCase(error) {
-	return error.response.data
+function handleErrorCase(messageError, error) {
+	return messageError
+		? {
+				success: false,
+				message: messageError,
+		  }
+		: error.response.data
 		? error.response.data
 		: {
 				success: false,
@@ -85,6 +92,8 @@ const TaskContextProvider = ({ children }) => {
 				});
 
 				SetNotFinishTasks([...notFinishTasks, response.data.task]);
+			} else {
+				handleErrorCase(response.data.message);
 			}
 		} catch (error) {
 			return handleErrorCase(error);
@@ -118,23 +127,49 @@ const TaskContextProvider = ({ children }) => {
 
 				// Case update from not finish task to finish
 
-				let new_not_finish_tasks;
-				let new_finish_tasks;
+				const new_not_finish_tasks = [...notFinishTasks];
+				const new_finish_tasks = [...finishTasks];
+
 				if (task.check === true) {
-					new_not_finish_tasks = [...notFinishTasks];
 					new_not_finish_tasks.splice(index, 1);
-					new_finish_tasks = [...finishTasks, task];
+					new_finish_tasks.push(task);
 				} else {
-					new_finish_tasks = [...finishTasks];
 					new_finish_tasks.splice(index, 1);
-					new_not_finish_tasks = [...notFinishTasks, task];
+					new_not_finish_tasks.push(task);
 				}
 
 				SetNotFinishTasks(new_not_finish_tasks);
 				SetFinishTasks(new_finish_tasks);
+			} else {
+				handleErrorCase(response.data.message);
 			}
 		} catch (error) {
 			return handleErrorCase(error);
+		}
+	};
+
+	const removeOneTask = async (_task) => {
+		const collection_id = taskState.inCollection._id;
+		try {
+			const response = await axios.delete(
+				`${API_URL}/collections/${collection_id}/tasks/${_task._id}`
+			);
+			if (response.data.success) {
+				dispatch({
+					type: REMOVE_ONE_TASK_SUCCESS,
+					payload: _task,
+				});
+
+				if (_task.check) {
+					SetFinishTasks(removeFromList(finishTasks, _task));
+				} else {
+					SetNotFinishTasks(removeFromList(notFinishTasks, _task));
+				}
+			} else {
+				handleErrorCase(response.data.message);
+			}
+		} catch (error) {
+			handleErrorCase(error);
 		}
 	};
 
@@ -154,10 +189,7 @@ const TaskContextProvider = ({ children }) => {
 				SetFinishTasks([]);
 				SetNotFinishTasks([]);
 			} else {
-				return {
-					success: false,
-					message: response.data.message,
-				};
+				handleErrorCase(response.data.message);
 			}
 		} catch (error) {
 			return handleErrorCase(error);
@@ -174,6 +206,7 @@ const TaskContextProvider = ({ children }) => {
 		showAddTask,
 		SetShowAddTask,
 		addNewTask,
+		removeOneTask,
 		removeAllTasks,
 	};
 

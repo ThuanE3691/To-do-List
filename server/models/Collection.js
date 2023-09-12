@@ -21,6 +21,10 @@ const CollectionSchema = new Schema({
 			ref: "tasks",
 		},
 	],
+	isFavorites: {
+		type: Boolean,
+		default: false,
+	},
 	user: {
 		type: Schema.Types.ObjectId,
 		ref: "users",

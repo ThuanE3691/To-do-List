@@ -21,6 +21,16 @@
     align-items: center;
 }
 
+.task-right{
+    
+}
+
+.task-right img{
+    width: 24px;
+    height: 24px;
+    filter: invert(100%) sepia(62%) saturate(0%) hue-rotate(232deg) brightness(116%) contrast(100%);
+}
+
 .task-checkbox{
     width: 24px;
     height: 24px;

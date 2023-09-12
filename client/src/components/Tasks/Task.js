@@ -1,5 +1,6 @@
 import "../../css/task.css";
 import calendar from "../../assets/Task/calendar.png";
+import deleteIcon from "../../assets/Other/delete.png";
 import { generateFilter } from "../../utils/filterGenerator.js";
 import { AnimatePresence, motion } from "framer-motion";
 
@@ -10,6 +11,7 @@ const Task = ({ name, check, colorDisplay, deadline, removeMode }) => {
 					deadline.getMonth() + 1
 			  } - ${deadline.getFullYear()}`
 			: null;
+
 	return (
 		<motion.div
 			className="task-container"
@@ -77,13 +79,14 @@ const Task = ({ name, check, colorDisplay, deadline, removeMode }) => {
 			<AnimatePresence>
 				{removeMode.active && (
 					<motion.div
-						className="task-remove"
-						style={{ borderColor: colorDisplay }}
+						className="task-right"
 						initial={{ opacity: 0, y: -10 }}
 						animate={{ opacity: 1, y: 0 }}
 						exit={{ opacity: 0, y: -10 }}
 						transition={{ duration: 0.2, easeInOut: "easeInOut" }}
-					></motion.div>
+					>
+						<img src={deleteIcon} alt="" />
+					</motion.div>
 				)}
 			</AnimatePresence>
 		</motion.div>

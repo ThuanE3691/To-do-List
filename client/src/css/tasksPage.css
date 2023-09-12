@@ -138,3 +138,7 @@
     margin-top: 30px;
     overflow: hidden;
 }
+
+.delete.active{
+    filter: invert(19%) sepia(99%) saturate(6763%) hue-rotate(343deg) brightness(90%) contrast(90%);
+}
